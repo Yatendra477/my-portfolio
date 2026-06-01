@@ -7,15 +7,15 @@ export const personalInfo = {
   lastName: "Verma",
   fullName: "Yatendra Verma",
   titles: [
-    "Software Developer",
+    "Python Developer",
+    "AI/ML Engineer",
     "Computer Vision Enthusiast",
-    "AI Engineer",
-    "Full Stack Developer",
+    "Backend Developer",
     "Problem Solver",
   ],
   summary:
-    "Passionate Software Developer and AI Engineer specializing in Computer Vision, Machine Learning, and Full-Stack Development. Building intelligent systems that bridge the gap between cutting-edge research and real-world applications.",
-  profileImage: "/images/profile.webp",
+    "Passionate Python Developer and AI/ML Engineer specializing in Computer Vision, Machine Learning, and backend development. Building intelligent systems that bridge the gap between cutting-edge research and real-world applications.",
+  profileImage: "/images/profile-v2.png",
   resumeUrl: "/resume.pdf",
   location: "Indore, Madhya Pradesh, India",
   email: "yatendrav477@gmail.com",
@@ -77,12 +77,27 @@ export const stats = [
 
 export const education = [
   {
+    degree: "Secondary (10th Grade)",
+    field: "CBSE",
+    institution: "Gyan Sagar International School",
+    location: "Hoshangabad, India",
+    duration: "2020",
+    coursework: [],
+  },
+  {
+    degree: "Higher Secondary (12th Grade)",
+    field: "Science — CBSE",
+    institution: "Gyan Sagar International School",
+    location: "Hoshangabad, India",
+    duration: "2022",
+    coursework: [],
+  },
+  {
     degree: "Bachelor of Technology (B.Tech)",
     field: "Robotics & Automation",
     institution: "Medicaps University",
     location: "Indore, India",
     duration: "2022 — 2026",
-    cgpa: "5.78 / 10",
     coursework: [
       "Data Structures",
       "Algorithms",
@@ -93,26 +108,7 @@ export const education = [
       "Computer Vision",
       "Machine Learning",
       "AI",
-      "Web Development",
     ],
-  },
-  {
-    degree: "Higher Secondary (12th Grade)",
-    field: "Science — CBSE",
-    institution: "Gyan Sagar International School",
-    location: "Hoshangabad, India",
-    duration: "2022",
-    cgpa: "5.50 / 10",
-    coursework: [],
-  },
-  {
-    degree: "Secondary (10th Grade)",
-    field: "CBSE",
-    institution: "Gyan Sagar International School",
-    location: "Hoshangabad, India",
-    duration: "2020",
-    cgpa: "5.20 / 10",
-    coursework: [],
   },
 ];
 
@@ -120,10 +116,8 @@ export const skillCategories = [
   {
     name: "Programming Languages",
     skills: [
-      { name: "C", level: 75, icon: "🔧" },
-      { name: "C++", level: 80, icon: "⚙️" },
       { name: "Python", level: 90, icon: "🐍" },
-      { name: "JavaScript", level: 70, icon: "✨" },
+      { name: "C", level: 75, icon: "🔧" },
     ],
   },
   {
@@ -131,15 +125,13 @@ export const skillCategories = [
     skills: [
       { name: "HTML", level: 85, icon: "🌐" },
       { name: "CSS", level: 80, icon: "🎨" },
-      { name: "Tailwind CSS", level: 75, icon: "💨" },
-      { name: "React", level: 70, icon: "⚛️" },
+      { name: "Streamlit", level: 75, icon: "📊" },
     ],
   },
   {
     name: "Backend",
     skills: [
-      { name: "Node.js", level: 65, icon: "🟢" },
-      { name: "Express.js", level: 60, icon: "🚂" },
+      { name: "FastAPI", level: 75, icon: "⚡" },
       { name: "Flask", level: 70, icon: "🧪" },
       { name: "Django", level: 60, icon: "🎯" },
     ],
@@ -176,7 +168,7 @@ export const skillCategories = [
 export const experience = [
   {
     company: "Cyber Instant Pvt. Ltd.",
-    role: "Software Engineer Intern",
+    role: "Python Development Intern",
     duration: "Jun 2025 — Jul 2025",
     location: "Indore, India",
     description:
@@ -213,27 +205,27 @@ export const projects = [
       "Automated attendance logging",
       "Admin dashboard with reports",
     ],
-    github: "https://github.com/tanishk937/face--attendance-system",
-    liveDemo: "",
-    image: "/images/project-face.webp",
+    github: "https://github.com/Yatendra477/FaceRecognition-Attendance-System",
+    liveDemo: "https://huggingface.co/spaces/Yatendra477/Face-Attendance-System",
+    image: "/images/project-face-v2.png",
     category: "AI/CV",
     featured: true,
     date: "Feb 2025 — Apr 2025",
   },
   {
-    title: "PythonBot — Automation Suite",
+    title: "Non-Profit QuizTutor Bot",
     description:
-      "Intelligent Python-based automation bot for executing routine tasks and improving workflow efficiency. Integrates API and web automation with robust error-handling mechanisms.",
-    technologies: ["Python", "React.js", "CSS", "HTML"],
+      "Intelligent educational bot designed for non-profits to provide automated tutoring and interactive quizzes. Features natural language processing, automated grading, and learning progress tracking.",
+    technologies: ["Python", "NLP", "APIs", "Database"],
     features: [
-      "Task automation engine",
-      "API integration layer",
-      "Web scraping capabilities",
-      "Error recovery system",
+      "Automated tutoring system",
+      "Interactive quiz generation",
+      "Learning progress tracking",
+      "Multi-platform integration",
     ],
-    github: "https://github.com/Yatendra477",
-    liveDemo: "",
-    image: "/images/project-bot.webp",
+    github: "https://github.com/Yatendra477/Non-Profit-QuizTutor-Bot",
+    liveDemo: "https://huggingface.co/spaces/Yatendra477/nonprofit-quiz-bot",
+    image: "/images/project-quizbot-v2.png",
     category: "Automation",
     featured: true,
     date: "2024",
@@ -251,50 +243,74 @@ export const projects = [
     ],
     github: "https://github.com/Yatendra477",
     liveDemo: "",
-    image: "/images/project-url.webp",
+    image: "/images/project-url-v2.png",
     category: "Web",
     featured: true,
     date: "2024",
   },
   {
-    title: "Smart IoT Automation System",
+    title: "NGO Infrastructure System",
     description:
-      "IoT-based smart automation project using Arduino and sensors for real-time environmental monitoring and automated control of connected devices.",
-    technologies: ["Arduino", "C++", "Sensors", "IoT"],
+      "Comprehensive infrastructure and resource management platform for non-governmental organizations. Features volunteer tracking, donation processing, and operational analytics.",
+    technologies: ["Python", "Django", "React", "PostgreSQL"],
     features: [
-      "Real-time sensor data monitoring",
-      "Automated device control",
-      "Serial communication protocol",
-      "Low-power operation mode",
+      "Volunteer management",
+      "Resource allocation tracking",
+      "Donation processing system",
+      "Operational analytics dashboard",
     ],
-    github: "https://github.com/Yatendra477",
+    github: "https://github.com/vinay-24250/ngo-infrastructure",
     liveDemo: "",
-    image: "/images/project-iot.webp",
-    category: "Automation",
-    featured: false,
+    image: "/images/project-ngo-v2.png",
+    category: "Web",
+    featured: true,
     date: "2024",
   },
   {
-    title: "ML Prediction Engine",
+    title: "Non-Profit Support Triage Agent",
     description:
-      "Machine learning prediction system built with Scikit-Learn for data analysis, model training, and predictive analytics on structured datasets.",
-    technologies: ["Python", "Scikit-Learn", "Pandas", "Matplotlib"],
+      "A production-grade, multi-agent AI system that classifies, enriches, and routes incoming support messages for non-profit organisations using FastAPI and Groq Llama 3.",
+    technologies: ["Python", "FastAPI", "Llama 3", "spaCy"],
     features: [
-      "Multiple ML model comparison",
-      "Data preprocessing pipeline",
-      "Visualization dashboard",
-      "Model performance metrics",
+      "Multi-agent AI orchestration",
+      "Intent and urgency classification",
+      "Named Entity Recognition (NER)",
+      "Deterministic routing rules engine",
     ],
-    github: "https://github.com/Yatendra477",
-    liveDemo: "",
-    image: "/images/project-ml.webp",
+    github: "https://github.com/Yatendra477/non-profit-triage-agent",
+    liveDemo: "https://non-profit-triage-agent.onrender.com/ui/",
+    image: "/images/project-triage-v2.png",
     category: "AI/CV",
-    featured: false,
-    date: "2025",
+    featured: true,
+    date: "2024",
   },
 ];
 
 export const certifications = [
+  {
+    title: "Agentic AI",
+    organization: "Datagami (IBM Gold Partner / nasscom)",
+    date: "Apr 2026 — May 2026",
+    description:
+      "Successfully completed a Skill-Based Project comprising 80 hours of structured learning and practical training in Agentic AI. Certificate: EDU-2026-2Q7YM",
+    credentialUrl: "#",
+  },
+  {
+    title: "Generative AI",
+    organization: "Datagami (IBM Gold Partner / nasscom)",
+    date: "Feb 2026 — Mar 2026",
+    description:
+      "Successfully completed a Skill-Based Project comprising 80 hours of structured learning and practical training in Generative AI. Certificate: EDU-2026-EFWGY",
+    credentialUrl: "#",
+  },
+  {
+    title: "DevOps Foundation",
+    organization: "Datagami (IBM Gold Partner / nasscom)",
+    date: "Jan 2026 — Feb 2026",
+    description:
+      "Successfully completed a Skill-Based Project comprising 80 hours of structured learning and practical training in DevOps Foundation. Certificate: EDU-2026-FTNC8",
+    credentialUrl: "#",
+  },
   {
     title: "Smart UAV: AI/ML in Communication & Navigation",
     organization: "IIT Indore (sponsored by MeitY)",
@@ -309,14 +325,6 @@ export const certifications = [
     date: "2024",
     description:
       "Comprehensive Python 3 certification covering core concepts, clean code practices, and real-world application development.",
-    credentialUrl: "#",
-  },
-  {
-    title: "Smart UAS: AI/ML Seminar",
-    organization: "IIT Indore",
-    date: "Mar 2024",
-    description:
-      "Intensive week-long seminar (Mar 1-6, 2024) on AI and ML applications in Unmanned Aircraft Systems.",
     credentialUrl: "#",
   },
 ];
@@ -371,8 +379,8 @@ export const testimonials = [
 
 export const resumeHighlights = [
   "B.Tech in Robotics & Automation from Medicaps University",
-  "Software Engineer Intern at Cyber Instant Pvt. Ltd.",
-  "Proficient in Python, C++, and AI/ML frameworks",
+  "Python Development Intern at Cyber Instant Pvt. Ltd.",
+  "Proficient in Python and AI/ML frameworks",
   "Specialized in Computer Vision with OpenCV",
   "200+ LeetCode problems solved",
   "IIT Indore Certified in AI/ML for UAV systems",
@@ -388,5 +396,6 @@ export const navLinks = [
   { label: "Certifications", href: "#certifications" },
   { label: "Achievements", href: "#achievements" },
   { label: "Resume", href: "#resume" },
+  { label: "Testimonials", href: "#testimonials" },
   { label: "Contact", href: "#contact" },
 ];

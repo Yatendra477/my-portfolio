@@ -1,63 +1,81 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Heart } from "lucide-react";
-import { GithubIcon, LinkedinIcon, TwitterIcon } from "@/components/Icons";
-import { personalInfo, navLinks } from "@/data/portfolio";
+import { Mail, Code2 } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "@/components/Icons";
+import type { SiteSettings, NavLink } from "@/lib/data";
 
-const socialLinks = [
-  { icon: GithubIcon, href: personalInfo.socialLinks.github, label: "GitHub" },
-  { icon: LinkedinIcon, href: personalInfo.socialLinks.linkedin, label: "LinkedIn" },
-  { icon: Mail, href: personalInfo.socialLinks.email, label: "Email" },
-  { icon: TwitterIcon, href: personalInfo.socialLinks.twitter, label: "Twitter" },
-];
+interface FooterProps {
+  settings: SiteSettings;
+  navLinks: NavLink[];
+}
 
-export default function Footer() {
+export default function Footer({ settings, navLinks }: FooterProps) {
   const currentYear = new Date().getFullYear();
+
+  const socialLinks = [
+    {
+      icon: GithubIcon,
+      href: settings.githubUrl,
+      label: `${settings.name} on GitHub`,
+      isExternal: true,
+    },
+    {
+      icon: LinkedinIcon,
+      href: settings.linkedinUrl,
+      label: `${settings.name} on LinkedIn`,
+      isExternal: true,
+    },
+    {
+      icon: Mail,
+      href: `mailto:${settings.contactEmail}`,
+      label: `Email ${settings.name}`,
+      isExternal: false,
+    },
+  ];
 
   return (
     <footer
-      className="py-12"
+      className="py-14 sm:py-16"
       style={{
-        background: "var(--bg-secondary)",
-        borderTop: "1px solid var(--glass-border)",
+        background: "#050A14",
+        borderTop: "1px solid #2A3140",
       }}
     >
-      <div className="section-container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
-          {/* Logo & tagline */}
-          <div>
-            <h3
-              className="text-xl font-bold mb-3"
-              style={{ color: "var(--text-heading)" }}
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-12 mb-12">
+          {/* Logo & Tagline */}
+          <div className="md:col-span-5 flex flex-col gap-3">
+            <a
+              href="#home"
+              className="flex items-center gap-2 font-bold text-lg text-white no-underline select-none tracking-tight transition-opacity hover:opacity-90"
             >
-              {personalInfo.firstName}
-              <span className="gradient-text"> {personalInfo.lastName}</span>
-            </h3>
+              <Code2 size={20} className="text-[#A0AEC0] shrink-0" />
+              <span>{settings.name}</span>
+            </a>
             <p
-              className="text-sm leading-relaxed max-w-xs"
-              style={{ color: "var(--text-secondary)" }}
+              className="text-sm leading-relaxed max-w-sm mt-1"
+              style={{ color: "#8b9ab3" }}
             >
-              Python Developer & AI/ML Engineer building intelligent solutions
-              for the real world.
+              {settings.title} specializing in Computer Vision,
+              intelligent agents, and backend development.
             </p>
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="md:col-span-4">
             <h4
-              className="text-sm font-semibold mb-4 uppercase tracking-wider"
-              style={{ color: "var(--text-heading)" }}
+              className="text-xs font-semibold uppercase tracking-wider mb-4 text-white"
             >
               Quick Links
             </h4>
-            <div className="grid grid-cols-2 gap-2">
-              {navLinks.slice(0, 8).map((link) => (
+            <div className="grid grid-cols-2 gap-2.5">
+              {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm no-underline transition-colors hover:text-[var(--color-electric-400)]"
-                  style={{ color: "var(--text-secondary)" }}
+                  className="text-sm no-underline transition-colors hover:text-white"
+                  style={{ color: "#8b9ab3" }}
                 >
                   {link.label}
                 </a>
@@ -65,50 +83,48 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Social */}
-          <div>
+          {/* Connect & Social Icons */}
+          <div className="md:col-span-3">
             <h4
-              className="text-sm font-semibold mb-4 uppercase tracking-wider"
-              style={{ color: "var(--text-heading)" }}
+              className="text-xs font-semibold uppercase tracking-wider mb-4 text-white"
             >
               Connect
             </h4>
-            <div className="flex gap-3">
+            <div className="flex items-center gap-3">
               {socialLinks.map((social) => (
                 <motion.a
                   key={social.label}
                   href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-xl flex items-center justify-center no-underline"
+                  target={social.isExternal ? "_blank" : undefined}
+                  rel={social.isExternal ? "noopener noreferrer" : undefined}
+                  aria-label={social.label}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center no-underline transition-all duration-200"
                   style={{
-                    background: "var(--glass-bg)",
-                    border: "1px solid var(--glass-border)",
-                    color: "var(--text-secondary)",
+                    background: "#0B1220",
+                    border: "1px solid #2A3140",
+                    color: "#8b9ab3",
                   }}
                   whileHover={{
-                    scale: 1.1,
-                    borderColor: "var(--color-electric-500)",
+                    scale: 1.08,
+                    borderColor: "#4A5568",
+                    color: "#FFFFFF",
                   }}
-                  aria-label={social.label}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <social.icon width={16} height={16} />
+                  <social.icon width={17} height={17} />
                 </motion.a>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom Bar: Copyright */}
         <div
-          className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left"
-          style={{ borderTop: "1px solid var(--glass-border)" }}
+          className="pt-8 text-center"
+          style={{ borderTop: "1px solid #2A3140" }}
         >
-          <p
-            className="text-xs w-full text-center"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            © {currentYear} {personalInfo.fullName}. All rights reserved.
+          <p className="text-xs" style={{ color: "#6B7280" }}>
+            &copy; {currentYear} {settings.name}. All rights reserved.
           </p>
         </div>
       </div>

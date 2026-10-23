@@ -3,13 +3,17 @@
 import { useTheme } from "next-themes";
 import { motion } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const emptySubscribe = () => () => {};
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
   if (!mounted) {
     return (
@@ -40,7 +44,7 @@ export default function ThemeToggle() {
         transition={{ duration: 0.3 }}
         className="absolute"
       >
-        <Moon size={18} style={{ color: "var(--color-cyan-400)" }} />
+        <Moon size={18} style={{ color: "var(--navy)" }} />
       </motion.div>
       <motion.div
         initial={false}
@@ -48,7 +52,7 @@ export default function ThemeToggle() {
         transition={{ duration: 0.3 }}
         className="absolute"
       >
-        <Sun size={18} style={{ color: "var(--color-electric-500)" }} />
+        <Sun size={18} style={{ color: "var(--slate-accent)" }} />
       </motion.div>
     </motion.button>
   );

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Outfit, JetBrains_Mono } from "next/font/google";
+import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./providers";
+import SafetyNet from "@/components/SafetyNet";
+import { personalInfo, STUDENT_STATUS } from "@/data/portfolio";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,7 +11,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const outfit = Outfit({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
@@ -21,10 +23,15 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const SITE_URL = "https://my-portfolio-plum-delta-42.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Yatendra Verma | Python Developer & AI/ML Engineer",
-  description:
-    "Portfolio of Yatendra Verma — Python Developer, AI/ML Engineer, and Computer Vision Enthusiast. Specializing in Python, Machine Learning, OpenCV, and backend development. Seeking opportunities in AI, ML, and Python development.",
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: SITE_URL,
+  },
+  title: `${personalInfo.fullName} | Python Developer & AI/ML Engineer`,
+  description: `Portfolio of ${personalInfo.fullName} — ${STUDENT_STATUS}, Python Developer, AI/ML Engineer, and Computer Vision Enthusiast. Specializing in Python, Machine Learning, OpenCV, and backend development. Seeking opportunities in AI, ML, and Python development.`,
   keywords: [
     "Yatendra Verma",
     "Software Developer",
@@ -32,19 +39,20 @@ export const metadata: Metadata = {
     "Computer Vision",
     "Machine Learning",
     "Python Developer",
-    "Full Stack Developer",
+    "Backend Developer",
+    "FastAPI",
+    "Flask",
+    "OpenCV",
     "Portfolio",
-    "React",
-    "Next.js",
   ],
-  authors: [{ name: "Yatendra Verma" }],
-  creator: "Yatendra Verma",
+  authors: [{ name: personalInfo.fullName }],
+  creator: personalInfo.fullName,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://yatendraverma.dev",
-    siteName: "Yatendra Verma Portfolio",
-    title: "Yatendra Verma | Python Developer & AI/ML Engineer",
+    url: SITE_URL,
+    siteName: `${personalInfo.fullName} Portfolio`,
+    title: `${personalInfo.fullName} | Python Developer & AI/ML Engineer`,
     description:
       "Passionate Python Developer and AI/ML Engineer. Explore my projects, skills, and experience in AI, Computer Vision, and backend development.",
     images: [
@@ -52,13 +60,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Yatendra Verma Portfolio",
+        alt: `${personalInfo.fullName} Portfolio`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Yatendra Verma | Python Developer & AI/ML Engineer",
+    title: `${personalInfo.fullName} | Python Developer & AI/ML Engineer`,
     description:
       "Passionate Python Developer and AI/ML Engineer specializing in Computer Vision and Machine Learning.",
   },
@@ -76,19 +84,19 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="theme-color" content="#0A0A0A" />
+        <meta name="theme-color" content="#EDEDF5" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              name: "Yatendra Verma",
+              name: personalInfo.fullName,
               jobTitle: "Python Developer & AI/ML Engineer",
-              url: "https://yatendraverma.dev",
+              url: SITE_URL,
               sameAs: [
-                "https://github.com/Yatendra477",
-                "https://www.linkedin.com/in/yatendra-verma-0899a6246",
+                personalInfo.socialLinks.github,
+                personalInfo.socialLinks.linkedin,
               ],
               alumniOf: {
                 "@type": "EducationalOrganization",
@@ -100,18 +108,22 @@ export default function RootLayout({
                 "Machine Learning",
                 "Computer Vision",
                 "Python",
-                "React",
-                "Full Stack Development",
+                "FastAPI",
+                "OpenCV",
+                "Backend Development",
               ],
             }),
           }}
         />
       </head>
       <body
-        className={`${inter.variable} ${outfit.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}
         style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}
       >
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <SafetyNet />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

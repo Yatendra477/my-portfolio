@@ -78,7 +78,7 @@ export const cardHoverVariant = {
   hover: {
     scale: 1.02,
     y: -8,
-    boxShadow: "0 20px 60px rgba(59,130,246,0.15)",
+    boxShadow: "0 20px 60px rgba(74, 85, 104, 0.15)",
     transition: { duration: 0.3, ease: "easeOut" },
   },
 };
@@ -180,9 +180,9 @@ export const headingLineVariant: Variants = {
 // Glow pulse for featured items
 export const glowPulse = {
   boxShadow: [
-    "0 0 20px rgba(59,130,246,0.1)",
-    "0 0 40px rgba(59,130,246,0.2)",
-    "0 0 20px rgba(59,130,246,0.1)",
+    "0 0 20px rgba(74, 85, 104, 0.1)",
+    "0 0 40px rgba(74, 85, 104, 0.2)",
+    "0 0 20px rgba(74, 85, 104, 0.1)",
   ],
   transition: {
     duration: 3,

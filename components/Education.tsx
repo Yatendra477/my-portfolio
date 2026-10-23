@@ -1,22 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GraduationCap, MapPin, Award } from "lucide-react";
-import { education } from "@/data/portfolio";
+import { GraduationCap, MapPin, Calendar } from "lucide-react";
 import SectionHeading from "./SectionHeading";
-import {
-  fadeUpVariant,
-  staggerContainer,
-  timelineDotVariant,
-  tagVariant,
-} from "@/lib/animations";
+import { fadeUpVariant, staggerContainer } from "@/lib/animations";
+import type { Education as EducationItem } from "@/lib/data";
 
-export default function Education() {
+interface EducationProps {
+  education: EducationItem[];
+}
+
+export default function Education({ education }: EducationProps) {
   return (
-    <section
-      id="education"
+    <div
       className="section"
-      style={{ background: "var(--bg-primary)" }}
+      style={{ background: "#F4F4F9" }}
     >
       <div className="section-container">
         <SectionHeading
@@ -26,17 +24,16 @@ export default function Education() {
         />
 
         <div className="relative max-w-3xl mx-auto">
-          {/* Timeline line */}
+          {/* Vertical Timeline Spine */}
           <div
-            className="absolute left-5 md:left-1/2 top-0 bottom-0 w-0.5 md:-translate-x-px"
+            className="absolute left-4 sm:left-6 md:left-8 top-4 bottom-4 w-0.5"
             style={{
-              background:
-                "linear-gradient(to bottom, var(--color-electric-500), var(--color-cyan-400), var(--color-emerald-400))",
+              background: "linear-gradient(to bottom, #1B1F3B, #4A5568, rgba(74, 85, 104, 0.25))",
             }}
           />
 
           <motion.div
-            className="space-y-10"
+            className="space-y-8"
             variants={staggerContainer}
             initial="hidden"
             whileInView="visible"
@@ -45,103 +42,78 @@ export default function Education() {
             {education.map((edu, index) => (
               <motion.div
                 key={index}
-                className={`relative flex flex-col md:flex-row ${
-                  index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                } items-start gap-4 md:gap-8`}
+                className="relative"
                 variants={fadeUpVariant}
               >
-                {/* Timeline dot */}
-                <motion.div
-                  className="absolute left-5 md:left-1/2 w-4 h-4 rounded-full -translate-x-1/2 z-10 mt-6 md:mt-8"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, var(--color-electric-500), var(--color-cyan-400))",
-                    boxShadow: "0 0 12px rgba(59,130,246,0.4)",
-                  }}
-                  variants={timelineDotVariant}
-                />
-
-                {/* Content card */}
+                {/* Timeline Node */}
                 <div
-                  className={`ml-12 md:ml-0 md:w-[calc(50%-2rem)] glass-card p-6 ${
-                    index % 2 === 0 ? "md:text-right" : "md:text-left"
-                  }`}
+                  className="absolute left-4 sm:left-6 md:left-8 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white border-2 border-[#1B1F3B] -translate-x-1/2 flex items-center justify-center text-[#1B1F3B] shadow-sm z-10 mt-6"
                 >
-                  {/* Duration badge */}
-                  <span
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full mb-3"
-                    style={{
-                      background: "rgba(59,130,246,0.1)",
-                      color: "var(--color-electric-400)",
-                    }}
-                  >
-                    {edu.duration}
-                  </span>
+                  <GraduationCap size={15} />
+                </div>
 
+                {/* Rounded Education Card */}
+                <div
+                  className="ml-10 sm:ml-14 md:ml-16 rounded-2xl p-6 sm:p-7 shadow-sm hover:shadow-md transition-shadow duration-300"
+                  style={{
+                    background: "#FFFFFF",
+                    border: "1px solid #D1D5DB",
+                  }}
+                >
+                  {/* Duration Badge */}
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-[#4A5568] border border-slate-200">
+                      <Calendar size={12} /> {edu.period}
+                    </span>
+                  </div>
+
+                  {/* Degree & Field */}
                   <h3
-                    className="text-lg font-bold mb-1"
-                    style={{ color: "var(--text-heading)" }}
+                    className="text-lg sm:text-xl font-bold mb-1"
+                    style={{ color: "#1B1F3B" }}
                   >
-                    <GraduationCap
-                      size={18}
-                      className="inline mr-2"
-                      style={{ color: "var(--color-electric-400)" }}
-                    />
-                    {edu.degree}
+                    {edu.title}
                   </h3>
 
                   <p
-                    className="text-sm font-medium mb-1"
-                    style={{ color: "var(--color-cyan-400)" }}
+                    className="text-sm font-semibold mb-2"
+                    style={{ color: "#4A5568" }}
                   >
-                    {edu.field}
+                    {edu.subtitle}
                   </p>
 
+                  {/* Institution & Location */}
                   <p
-                    className="text-sm mb-1 flex items-center gap-1"
-                    style={{
-                      color: "var(--text-secondary)",
-                      justifyContent:
-                        index % 2 === 0 ? "flex-end" : "flex-start",
-                    }}
+                    className="flex items-center gap-1.5 text-xs mb-3 text-[#6B7280]"
                   >
-                    <MapPin size={13} />
-                    {edu.institution}, {edu.location}
+                    <MapPin size={13} className="shrink-0" />
+                    <span>{edu.institution}, {edu.location}</span>
                   </p>
 
-                  {/* CGPA removed as requested */}
-
-                  {/* Coursework tags */}
-                  {edu.coursework.length > 0 && (
-                    <motion.div
-                      className={`flex flex-wrap gap-1.5 ${
-                        index % 2 === 0 ? "md:justify-end" : "md:justify-start"
-                      }`}
-                      variants={staggerContainer}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                    >
-                      {edu.coursework.map((course) => (
-                        <motion.span
-                          key={course}
-                          className="tech-tag"
-                          variants={tagVariant}
-                        >
-                          {course}
-                        </motion.span>
-                      ))}
-                    </motion.div>
+                  {/* Coursework & Subjects as Pill Tags */}
+                  {edu.tags && edu.tags.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-slate-100">
+                      <p className="text-xs font-bold uppercase tracking-wider text-[#1B1F3B] mb-2.5">
+                        Key Subjects &amp; Coursework:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {edu.tags.map((course) => (
+                          <span
+                            key={course}
+                            className="bg-slate-100 text-slate-700 border border-slate-200 rounded-full px-3 py-1 text-xs font-medium hover:border-slate-300 transition-colors select-none"
+                          >
+                            {course}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </div>
-
-                {/* Spacer for alternating layout */}
-                <div className="hidden md:block md:w-[calc(50%-2rem)]" />
               </motion.div>
             ))}
           </motion.div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

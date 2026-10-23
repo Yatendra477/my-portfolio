@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 import { headingLineVariant, fadeUpVariant } from "@/lib/animations";
@@ -7,16 +7,19 @@ interface SectionHeadingProps {
   title: string;
   highlight: string;
   subtitle?: string;
+  align?: "left" | "center";
 }
 
 export default function SectionHeading({
   title,
   highlight,
   subtitle,
+  align = "center",
 }: SectionHeadingProps) {
+  const isLeft = align === "left";
   return (
     <motion.div
-      className="text-center mb-16"
+      className={isLeft ? "mb-4" : "text-center mb-16"}
       variants={fadeUpVariant}
       initial="hidden"
       whileInView="visible"
@@ -31,17 +34,16 @@ export default function SectionHeading({
       </h2>
       {subtitle && (
         <p
-          className="text-base md:text-lg max-w-2xl mx-auto"
+          className={`text-base md:text-lg ${isLeft ? "" : "max-w-2xl mx-auto"}`}
           style={{ color: "var(--text-secondary)" }}
         >
           {subtitle}
         </p>
       )}
       <motion.div
-        className="h-[3px] mx-auto mt-5 rounded-full"
+        className={`h-[3px] mt-5 rounded-full ${isLeft ? "" : "mx-auto"}`}
         style={{
-          background:
-            "linear-gradient(90deg, var(--color-electric-500), var(--color-cyan-400))",
+          background: "linear-gradient(90deg, var(--navy), var(--slate-accent))",
         }}
         variants={headingLineVariant}
         initial="hidden"

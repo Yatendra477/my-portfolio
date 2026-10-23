@@ -2,25 +2,29 @@
 
 import { motion } from "framer-motion";
 import { Code2, Trophy, Award, GitBranch } from "lucide-react";
-import { achievements } from "@/data/portfolio";
 import SectionHeading from "./SectionHeading";
 import { fadeUpVariant, staggerContainer } from "@/lib/animations";
+import type { Achievement } from "@/lib/data";
 
-const iconMap: Record<string, React.ComponentType<{ size?: number }>> = {
+const iconMap: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
   Code2,
   Trophy,
   Award,
   GitBranch,
 };
 
-export default function Achievements() {
+interface AchievementsProps {
+  achievements: Achievement[];
+}
+
+export default function Achievements({ achievements }: AchievementsProps) {
   return (
     <section
       id="achievements"
       className="section"
-      style={{ background: "var(--bg-secondary)" }}
+      style={{ background: "var(--bg-primary)" }}
     >
-      <div className="section-container">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeading
           title="Key"
           highlight="Achievements"
@@ -28,51 +32,59 @@ export default function Achievements() {
         />
 
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
           {achievements.map((ach, index) => {
-            const IconComp = iconMap[ach.icon];
+            const IconComp = iconMap[ach.icon] || Award;
             return (
               <motion.div
                 key={index}
-                className="glass-card p-6 flex gap-4 items-start group"
+                className="rounded-2xl p-6 flex items-start gap-4 transition-all duration-300 group hover:-translate-y-1 hover:shadow-lg"
+                style={{
+                  background: "#F3F4F6",
+                  border: "1px solid #D1D5DB",
+                }}
                 variants={fadeUpVariant}
               >
+                {/* Icon box */}
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 shadow-xs transition-transform duration-300 group-hover:scale-105"
                   style={{
-                    background:
-                      "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(34,211,238,0.15))",
-                    color: "var(--color-cyan-400)",
+                    background: "#FFFFFF",
+                    border: "1px solid rgba(209, 213, 219, 0.8)",
+                    color: "#1B1F3B",
                   }}
                 >
-                  {IconComp && (
-                    <IconComp size={24} />
-                  )}
+                  <IconComp size={24} className="text-[#1B1F3B]" />
                 </div>
-                <div>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
                   <span
-                    className="text-xs font-medium px-2 py-0.5 rounded-full mb-2 inline-block"
+                    className="text-xs font-semibold px-2.5 py-0.5 rounded-full inline-block mb-2"
                     style={{
-                      background: "rgba(16,185,129,0.1)",
-                      color: "var(--color-emerald-400)",
+                      background: "rgba(74, 85, 104, 0.1)",
+                      color: "#4A5568",
+                      border: "1px solid rgba(74, 85, 104, 0.15)",
                     }}
                   >
                     {ach.category}
                   </span>
+
                   <h3
-                    className="text-base font-bold mb-1"
-                    style={{ color: "var(--text-heading)" }}
+                    className="text-base sm:text-lg font-bold mb-1.5 font-[family-name:var(--font-display)] leading-snug group-hover:text-[#4A5568] transition-colors"
+                    style={{ color: "#1B1F3B" }}
                   >
                     {ach.title}
                   </h3>
+
                   <p
                     className="text-sm leading-relaxed"
-                    style={{ color: "var(--text-secondary)" }}
+                    style={{ color: "#4A5568" }}
                   >
                     {ach.description}
                   </p>

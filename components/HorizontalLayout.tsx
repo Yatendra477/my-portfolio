@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import gsap from "gsap";
+import { testimonials } from "@/data/portfolio";
 
 // ─── Section index map ────────────────────────────────────────────────────────
 export const SECTION_IDS = [
@@ -21,7 +22,7 @@ export const SECTION_IDS = [
   "certifications",
   "achievements",
   "resume",
-  "testimonials",
+  ...(testimonials.length > 0 ? ["testimonials"] : []),
   "contact",
 ];
 
@@ -257,7 +258,7 @@ export default function HorizontalLayout({ children }: { children: ReactNode }) 
               transition: "all 0.4s cubic-bezier(0.22,1,0.36,1)",
               background:
                 i === activeIndex
-                  ? "var(--color-electric-400)"
+                  ? "var(--slate-accent)"
                   : "rgba(255,255,255,0.25)",
               padding: 0,
             }}

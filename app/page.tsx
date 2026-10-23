@@ -6,6 +6,7 @@ import Education from "@/components/Education";
 import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
+import CallToAction from "@/components/CallToAction";
 import Certifications from "@/components/Certifications";
 import Achievements from "@/components/Achievements";
 import Resume from "@/components/Resume";
@@ -13,70 +14,117 @@ import Testimonials from "@/components/Testimonials";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import BackToTop from "@/components/BackToTop";
-import HorizontalLayout from "@/components/HorizontalLayout";
+import {
+  getSiteSettings,
+  getSectionVisibility,
+  getAboutHighlights,
+  getAboutStats,
+  getEducation,
+  getSkillCategories,
+  getExperience,
+  getProjects,
+  getCertifications,
+  getAchievements,
+  getTestimonials,
+  getNavLinks,
+} from "@/lib/data";
 
-export default function Home() {
+export default async function Home() {
+  // Fetch all data in parallel
+  const [
+    settings,
+    visibility,
+    aboutHighlights,
+    aboutStats,
+    education,
+    skillCategories,
+    experience,
+    projects,
+    certifications,
+    achievements,
+    testimonials,
+  ] = await Promise.all([
+    getSiteSettings(),
+    getSectionVisibility(),
+    getAboutHighlights(),
+    getAboutStats(),
+    getEducation(),
+    getSkillCategories(),
+    getExperience(),
+    getProjects(),
+    getCertifications(),
+    getAchievements(),
+    getTestimonials(),
+  ]);
+
+  const navLinks = await getNavLinks(visibility);
+
+  const showTestimonials = visibility.testimonials !== false && testimonials.length > 0;
+
   return (
     <>
       <LoadingScreen />
-      <Navigation />
-      <HorizontalLayout>
-        {/* Panel 1 — Home */}
-        <div id="home-panel" style={{ width: "100%", height: "100%" }}>
-          <Hero />
-        </div>
-
-        {/* Panel 2 — About */}
-        <div id="about-panel" style={{ width: "100%", height: "100%" }}>
-          <About />
-        </div>
-
-        {/* Panel 3 — Education */}
-        <div id="education-panel" style={{ width: "100%", height: "100%" }}>
-          <Education />
-        </div>
-
-        {/* Panel 4 — Skills */}
-        <div id="skills-panel" style={{ width: "100%", height: "100%" }}>
-          <Skills />
-        </div>
-
-        {/* Panel 5 — Experience */}
-        <div id="experience-panel" style={{ width: "100%", height: "100%" }}>
-          <Experience />
-        </div>
-
-        {/* Panel 6 — Projects */}
-        <div id="projects-panel" style={{ width: "100%", height: "100%" }}>
-          <Projects />
-        </div>
-
-        {/* Panel 7 — Certifications */}
-        <div id="certifications-panel" style={{ width: "100%", height: "100%" }}>
-          <Certifications />
-        </div>
-
-        {/* Panel 8 — Achievements */}
-        <div id="achievements-panel" style={{ width: "100%", height: "100%" }}>
-          <Achievements />
-        </div>
-
-        {/* Panel 9 — Resume */}
-        <div id="resume-panel" style={{ width: "100%", height: "100%" }}>
-          <Resume />
-        </div>
-
-        {/* Panel 10 — Testimonials */}
-        <div id="testimonials-panel" style={{ width: "100%", height: "100%" }}>
-          <Testimonials />
-        </div>
-
-        {/* Panel 11 — Contact */}
-        <div id="contact-panel" style={{ width: "100%", height: "100%" }}>
-          <Contact />
-          <Footer />
-        </div>
-      </HorizontalLayout>
+      <Navigation navLinks={navLinks} settings={settings} />
+      <main>
+        {visibility.home !== false && (
+          <section id="home">
+            <Hero settings={settings} projects={projects} certifications={certifications} />
+          </section>
+        )}
+        {visibility.about !== false && (
+          <section id="about">
+            <About
+              settings={settings}
+              highlights={aboutHighlights}
+              stats={aboutStats}
+              skillCategories={skillCategories}
+            />
+          </section>
+        )}
+        {visibility.education !== false && (
+          <section id="education">
+            <Education education={education} />
+          </section>
+        )}
+        {visibility.skills !== false && (
+          <section id="skills">
+            <Skills skillCategories={skillCategories} />
+          </section>
+        )}
+        {visibility.experience !== false && (
+          <section id="experience">
+            <Experience experience={experience} />
+          </section>
+        )}
+        {visibility.projects !== false && (
+          <section id="projects">
+            <Projects projects={projects} />
+          </section>
+        )}
+        <CallToAction />
+        {visibility.certifications !== false && (
+          <section id="certifications">
+            <Certifications certifications={certifications} />
+          </section>
+        )}
+        {visibility.achievements !== false && (
+          <section id="achievements">
+            <Achievements achievements={achievements} />
+          </section>
+        )}
+        {visibility.resume !== false && (
+          <section id="resume">
+            <Resume settings={settings} />
+          </section>
+        )}
+        {showTestimonials && (
+          <section id="testimonials">
+            <Testimonials testimonials={testimonials} />
+          </section>
+        )}
+        <Contact settings={settings} />
+      </main>
+      <Footer settings={settings} navLinks={navLinks} />
       <BackToTop />
     </>
   );

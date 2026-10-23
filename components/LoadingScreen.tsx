@@ -31,9 +31,9 @@ export default function LoadingScreen() {
                 className="absolute inset-0 rounded-full"
                 animate={{
                   boxShadow: [
-                    "0 0 0px rgba(59,130,246,0)",
-                    "0 0 30px rgba(59,130,246,0.3)",
-                    "0 0 0px rgba(59,130,246,0)",
+                    "0 0 0px rgba(74, 85, 104, 0)",
+                    "0 0 30px rgba(74, 85, 104, 0.3)",
+                    "0 0 0px rgba(74, 85, 104, 0)",
                   ],
                 }}
                 transition={{ duration: 1.5, repeat: Infinity }}

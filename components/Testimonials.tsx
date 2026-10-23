@@ -1,144 +1,110 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { Quote, ChevronLeft, ChevronRight, User } from "lucide-react";
-import { testimonials } from "@/data/portfolio";
+import { Star } from "lucide-react";
 import SectionHeading from "./SectionHeading";
-import { fadeUpVariant } from "@/lib/animations";
+import { fadeUpVariant, staggerContainer } from "@/lib/animations";
+import type { Testimonial } from "@/lib/data";
 
-export default function Testimonials() {
-  const [current, setCurrent] = useState(0);
+function getInitials(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 0 || !parts[0]) return "CL";
+  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
-  const next = () => setCurrent((prev) => (prev + 1) % testimonials.length);
-  const prev = () =>
-    setCurrent(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
-    );
+interface TestimonialsProps {
+  testimonials: Testimonial[];
+}
 
-  const testimonial = testimonials[current];
+export default function Testimonials({ testimonials }: TestimonialsProps) {
+  if (!testimonials || testimonials.length === 0) {
+    return null;
+  }
 
   return (
     <section
+      id="testimonials"
       className="section"
-      style={{ background: "var(--bg-secondary)" }}
+      style={{ background: "var(--bg-primary)" }}
     >
-      <div className="section-container">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeading
-          title="What People"
-          highlight="Say"
-          subtitle="Testimonials from mentors, colleagues, and collaborators"
+          title="My"
+          highlight="Clients"
+          subtitle="Feedback from clients, mentors, and collaborators"
         />
 
-        <div className="max-w-2xl mx-auto">
-          <motion.div
-            className="glass-card p-8 md:p-10 text-center relative"
-            variants={fadeUpVariant}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {/* Quote icon */}
-            <Quote
-              size={40}
-              className="mx-auto mb-6 opacity-30"
-              style={{ color: "var(--color-electric-400)" }}
-            />
-
-            {/* Review text */}
-            <motion.p
-              key={current}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-base md:text-lg leading-relaxed mb-8 italic"
-              style={{ color: "var(--text-primary)" }}
-            >
-              &ldquo;{testimonial.review}&rdquo;
-            </motion.p>
-
-            {/* Author */}
-            <motion.div
-              key={`author-${current}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center gap-2"
-            >
-              <div
-                className="w-14 h-14 rounded-full flex items-center justify-center"
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+        >
+          {testimonials.map((item, index) => {
+            const initials = getInitials(item.name);
+            return (
+              <motion.div
+                key={index}
+                className="rounded-xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 style={{
-                  background:
-                    "linear-gradient(135deg, var(--color-electric-500), var(--color-cyan-400))",
+                  background: "#F3F4F6",
+                  border: "1px solid #D1D5DB",
                 }}
+                variants={fadeUpVariant}
               >
-                <User size={24} style={{ color: "white" }} />
-              </div>
-              <div>
-                <h4
-                  className="text-base font-semibold"
-                  style={{ color: "var(--text-heading)" }}
-                >
-                  {testimonial.name}
-                </h4>
-                <p
-                  className="text-sm"
-                  style={{ color: "var(--text-secondary)" }}
-                >
-                  {testimonial.designation}
-                </p>
-              </div>
-            </motion.div>
+                <div>
+                  {/* 5 Yellow Stars */}
+                  <div className="flex items-center gap-1 mb-4" aria-label="5 out of 5 stars">
+                    {[...Array(5)].map((_, starIdx) => (
+                      <Star
+                        key={starIdx}
+                        size={15}
+                        className="fill-[#FACC15] text-[#FACC15]"
+                      />
+                    ))}
+                  </div>
 
-            {/* Navigation */}
-            {testimonials.length > 1 && (
-              <div className="flex items-center justify-center gap-4 mt-8">
-                <motion.button
-                  onClick={prev}
-                  className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer border-0"
-                  style={{
-                    background: "var(--glass-bg)",
-                    border: "1px solid var(--glass-border)",
-                    color: "var(--text-secondary)",
-                  }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <ChevronLeft size={18} />
-                </motion.button>
-
-                <div className="flex gap-2">
-                  {testimonials.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrent(i)}
-                      className="w-2 h-2 rounded-full cursor-pointer border-0 transition-all"
-                      style={{
-                        background:
-                          i === current
-                            ? "var(--color-electric-400)"
-                            : "var(--glass-border)",
-                        transform: i === current ? "scale(1.3)" : "scale(1)",
-                      }}
-                    />
-                  ))}
+                  {/* Quote */}
+                  <p
+                    className="text-sm sm:text-base leading-relaxed italic mb-6"
+                    style={{ color: "#1B1F3B" }}
+                  >
+                    &ldquo;{item.quote}&rdquo;
+                  </p>
                 </div>
 
-                <motion.button
-                  onClick={next}
-                  className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer border-0"
-                  style={{
-                    background: "var(--glass-bg)",
-                    border: "1px solid var(--glass-border)",
-                    color: "var(--text-secondary)",
-                  }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <ChevronRight size={18} />
-                </motion.button>
-              </div>
-            )}
-          </motion.div>
-        </div>
+                {/* Author row */}
+                <div className="flex items-center gap-3 pt-4 border-t border-[#D1D5DB]/60">
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-bold text-xs tracking-wider"
+                    style={{
+                      background: "#1B1F3B",
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    {initials}
+                  </div>
+                  <div className="min-w-0">
+                    <h4
+                      className="text-sm font-bold truncate leading-tight font-[family-name:var(--font-display)]"
+                      style={{ color: "#1B1F3B" }}
+                    >
+                      {item.name}
+                    </h4>
+                    <p
+                      className="text-xs truncate mt-0.5"
+                      style={{ color: "#6B7280" }}
+                    >
+                      {item.role}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );

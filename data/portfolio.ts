@@ -2,6 +2,9 @@
 // PORTFOLIO DATA — Edit this file to update all website content
 // ============================================================
 
+export const STUDENT_STATUS = "final-year B.Tech student";
+export const RESUME_UPDATED: string = "";
+
 export const personalInfo = {
   firstName: "Yatendra",
   lastName: "Verma",
@@ -15,7 +18,7 @@ export const personalInfo = {
   ],
   summary:
     "Passionate Python Developer and AI/ML Engineer specializing in Computer Vision, Machine Learning, and backend development. Building intelligent systems that bridge the gap between cutting-edge research and real-world applications.",
-  profileImage: "/images/profile-v2.png",
+  profileImage: "/images/profile-cutout.png",
   resumeUrl: "/resume.pdf",
   location: "Indore, Madhya Pradesh, India",
   email: "yatendrav477@gmail.com",
@@ -24,7 +27,6 @@ export const personalInfo = {
     github: "https://github.com/Yatendra477",
     linkedin: "https://www.linkedin.com/in/yatendra-verma-0899a6246",
     email: "mailto:yatendrav477@gmail.com",
-    twitter: "#",
   },
 };
 
@@ -68,10 +70,10 @@ export const aboutHighlights = [
 ];
 
 export const stats = [
-  { label: "Projects Completed", value: 5, suffix: "+" },
-  { label: "Technologies Learned", value: 12, suffix: "+" },
-  { label: "Certifications Earned", value: 3, suffix: "+" },
-  { label: "Coding Hours", value: 1500, suffix: "+" },
+  { label: "Projects Completed", value: 5, suffix: "" },
+  { label: "Certifications Earned", value: 5, suffix: "" },
+  { label: "Technologies Learned", value: 21, suffix: "+" },
+  { label: "LeetCode Problems", value: 200, suffix: "+" },
   { label: "Hackathons", value: 2, suffix: "+" },
 ];
 
@@ -116,51 +118,54 @@ export const skillCategories = [
   {
     name: "Programming Languages",
     skills: [
-      { name: "Python", level: 90, icon: "🐍" },
-      { name: "C", level: 75, icon: "🔧" },
+      { name: "Python", level: 90, icon: "Code2", description: "Primary language for all projects" },
+      { name: "C", level: 75, icon: "Cpu", description: "Systems & embedded programming" },
     ],
   },
   {
     name: "Frontend",
     skills: [
-      { name: "HTML", level: 85, icon: "🌐" },
-      { name: "CSS", level: 80, icon: "🎨" },
-      { name: "Streamlit", level: 75, icon: "📊" },
+      { name: "HTML", level: 85, icon: "Globe", description: "Semantic markup & structure" },
+      { name: "CSS", level: 80, icon: "Palette", description: "Styling & responsive layouts" },
+      { name: "Streamlit", level: 75, icon: "BarChart3", description: "Python-based data apps & demos" },
     ],
   },
   {
     name: "Backend",
     skills: [
-      { name: "FastAPI", level: 75, icon: "⚡" },
-      { name: "Flask", level: 70, icon: "🧪" },
-      { name: "Django", level: 60, icon: "🎯" },
+      { name: "FastAPI", level: 75, icon: "Zap", description: "High-performance async REST APIs" },
+      { name: "Flask", level: 70, icon: "FlaskConical", description: "Lightweight web framework" },
+      { name: "Django", level: 60, icon: "Layers", description: "Full-featured Python web framework" },
     ],
   },
   {
     name: "Database",
     skills: [
-      { name: "MySQL", level: 80, icon: "🗄️" },
-      { name: "MongoDB", level: 60, icon: "🍃" },
+      { name: "MySQL", level: 80, icon: "Database", description: "Relational database design & queries" },
+      { name: "MongoDB", level: 60, icon: "Leaf", description: "NoSQL document-based storage" },
+      { name: "PostgreSQL", level: 65, icon: "Database", description: "Advanced open-source RDBMS" },
     ],
   },
   {
     name: "AI & Computer Vision",
     skills: [
-      { name: "OpenCV", level: 85, icon: "👁️" },
-      { name: "Image Processing", level: 80, icon: "🖼️" },
-      { name: "Machine Learning", level: 75, icon: "🤖" },
-      { name: "Deep Learning", level: 65, icon: "🧠" },
-      { name: "Scikit-Learn", level: 70, icon: "📊" },
+      { name: "OpenCV", level: 85, icon: "Eye", description: "Real-time image & video processing" },
+      { name: "Image Processing", level: 80, icon: "Scan", description: "Filters, transforms, feature extraction" },
+      { name: "Machine Learning", level: 75, icon: "Bot", description: "Supervised & unsupervised models" },
+      { name: "Deep Learning", level: 65, icon: "Brain", description: "Neural networks & model training" },
+      { name: "Scikit-Learn", level: 70, icon: "Binary", description: "Classical ML pipelines & evaluation" },
+      { name: "NumPy / Pandas", level: 80, icon: "BarChart3", description: "Numerical computing & data wrangling" },
+      { name: "spaCy", level: 65, icon: "Bot", description: "NLP & named entity recognition" },
     ],
   },
   {
     name: "Tools & Platforms",
     skills: [
-      { name: "Git", level: 85, icon: "📦" },
-      { name: "GitHub", level: 90, icon: "🐙" },
-      { name: "VS Code", level: 90, icon: "💻" },
-      { name: "Arduino", level: 75, icon: "🔌" },
-      { name: "Linux", level: 65, icon: "🐧" },
+      { name: "Git", level: 85, icon: "GitBranch", description: "Version control & branching" },
+      { name: "GitHub", level: 90, icon: "FolderGit2", description: "Repository management & collaboration" },
+      { name: "VS Code", level: 90, icon: "Laptop", description: "Primary code editor" },
+      { name: "Arduino", level: 75, icon: "CircuitBoard", description: "Microcontroller & embedded systems" },
+      { name: "Linux", level: 65, icon: "Terminal", description: "CLI, scripting & server environments" },
     ],
   },
 ];
@@ -169,7 +174,7 @@ export const experience = [
   {
     company: "Cyber Instant Pvt. Ltd.",
     role: "Python Development Intern",
-    duration: "Jun 2025 — Jul 2025",
+    duration: "Jun 2025 – Jul 2025",
     location: "Indore, India",
     description:
       "Focused on scripting, automation, and backend development to support security operations and application development.",
@@ -210,7 +215,7 @@ export const projects = [
     image: "/images/project-face-v2.png",
     category: "AI/CV",
     featured: true,
-    date: "Feb 2025 — Apr 2025",
+    date: "Feb 2025 – Apr 2025",
   },
   {
     title: "Non-Profit QuizTutor Bot",
@@ -241,11 +246,11 @@ export const projects = [
       "Click analytics dashboard",
       "RESTful API endpoints",
     ],
-    github: "https://github.com/Yatendra477",
+    github: "", // Showcase project (no public repository)
     liveDemo: "",
     image: "/images/project-url-v2.png",
     category: "Web",
-    featured: true,
+    featured: false,
     date: "2024",
   },
   {
@@ -263,7 +268,7 @@ export const projects = [
     liveDemo: "",
     image: "/images/project-ngo-v2.png",
     category: "Web",
-    featured: true,
+    featured: false,
     date: "2024",
   },
   {
@@ -290,34 +295,34 @@ export const certifications = [
   {
     title: "Agentic AI",
     organization: "Datagami (IBM Gold Partner / nasscom)",
-    date: "Apr 2026 — May 2026",
+    date: "Apr 2026 – May 2026",
     description:
       "Successfully completed a Skill-Based Project comprising 80 hours of structured learning and practical training in Agentic AI. Certificate: EDU-2026-2Q7YM",
-    credentialUrl: "#",
+    credentialUrl: "",
   },
   {
     title: "Generative AI",
     organization: "Datagami (IBM Gold Partner / nasscom)",
-    date: "Feb 2026 — Mar 2026",
+    date: "Feb 2026 – Mar 2026",
     description:
       "Successfully completed a Skill-Based Project comprising 80 hours of structured learning and practical training in Generative AI. Certificate: EDU-2026-EFWGY",
-    credentialUrl: "#",
+    credentialUrl: "",
   },
   {
     title: "DevOps Foundation",
     organization: "Datagami (IBM Gold Partner / nasscom)",
-    date: "Jan 2026 — Feb 2026",
+    date: "Jan 2026 – Feb 2026",
     description:
       "Successfully completed a Skill-Based Project comprising 80 hours of structured learning and practical training in DevOps Foundation. Certificate: EDU-2026-FTNC8",
-    credentialUrl: "#",
+    credentialUrl: "",
   },
   {
     title: "Smart UAV: AI/ML in Communication & Navigation",
     organization: "IIT Indore (sponsored by MeitY)",
-    date: "March 2024",
+    date: "Mar 2024",
     description:
       "40+ hours hands-on training covering drone basics, AI/ML applications, communications, navigation, and regulations. Aggregate: 10/10.",
-    credentialUrl: "#",
+    credentialUrl: "",
   },
   {
     title: "Python Programming",
@@ -325,7 +330,7 @@ export const certifications = [
     date: "2024",
     description:
       "Comprehensive Python 3 certification covering core concepts, clean code practices, and real-world application development.",
-    credentialUrl: "#",
+    credentialUrl: "",
   },
 ];
 
@@ -360,22 +365,16 @@ export const achievements = [
   },
 ];
 
-export const testimonials = [
-  {
-    name: "Prof. Mentor Name",
-    designation: "Professor, Medicaps University",
-    review:
-      "Yatendra is a dedicated student with a strong passion for AI and computer vision. His project work demonstrates exceptional problem-solving abilities and technical depth.",
-    photo: "",
-  },
-  {
-    name: "Team Lead",
-    designation: "Senior Engineer, Cyber Instant Pvt. Ltd.",
-    review:
-      "During his internship, Yatendra showed remarkable initiative in automating workflows and building robust backend systems. A quick learner with great attention to detail.",
-    photo: "",
-  },
-];
+export interface TestimonialItem {
+  name: string;
+  designation: string;
+  review: string;
+  photo?: string;
+}
+
+// TODO: Add real testimonials here once supplied (e.g. name, role, quote, photo).
+// Section and nav/footer links are automatically hidden while this array is empty.
+export const testimonials: TestimonialItem[] = [];
 
 export const resumeHighlights = [
   "B.Tech in Robotics & Automation from Medicaps University",
@@ -389,13 +388,9 @@ export const resumeHighlights = [
 export const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
-  { label: "Education", href: "#education" },
   { label: "Skills", href: "#skills" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Certifications", href: "#certifications" },
-  { label: "Achievements", href: "#achievements" },
-  { label: "Resume", href: "#resume" },
-  { label: "Testimonials", href: "#testimonials" },
   { label: "Contact", href: "#contact" },
 ];

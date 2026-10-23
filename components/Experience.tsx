@@ -1,21 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Briefcase, MapPin, Calendar } from "lucide-react";
-import { experience } from "@/data/portfolio";
+import { Briefcase, MapPin, Calendar, CheckCircle2 } from "lucide-react";
 import SectionHeading from "./SectionHeading";
-import {
-  fadeUpVariant,
-  staggerContainer,
-  timelineDotVariant,
-} from "@/lib/animations";
+import { fadeUpVariant, staggerContainer } from "@/lib/animations";
+import type { Experience as ExperienceItem } from "@/lib/data";
 
-export default function Experience() {
+interface ExperienceProps {
+  experience: ExperienceItem[];
+}
+
+export default function Experience({ experience }: ExperienceProps) {
   return (
-    <section
-      id="experience"
+    <div
       className="section"
-      style={{ background: "var(--bg-primary)" }}
+      style={{ background: "#FFFFFF" }}
     >
       <div className="section-container">
         <SectionHeading
@@ -25,12 +24,11 @@ export default function Experience() {
         />
 
         <div className="relative max-w-3xl mx-auto">
-          {/* Timeline line */}
+          {/* Vertical Timeline Spine */}
           <div
-            className="absolute left-5 top-0 bottom-0 w-0.5"
+            className="absolute left-4 sm:left-6 md:left-8 top-4 bottom-4 w-0.5"
             style={{
-              background:
-                "linear-gradient(to bottom, var(--color-electric-500), var(--color-cyan-400))",
+              background: "linear-gradient(to bottom, #1B1F3B, #4A5568, rgba(74, 85, 104, 0.25))",
             }}
           />
 
@@ -44,113 +42,114 @@ export default function Experience() {
             {experience.map((exp, index) => (
               <motion.div
                 key={index}
-                className="relative pl-14"
+                className="relative"
                 variants={fadeUpVariant}
               >
-                {/* Timeline dot */}
-                <motion.div
-                  className="absolute left-5 w-4 h-4 rounded-full -translate-x-1/2 mt-6 z-10"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, var(--color-electric-500), var(--color-cyan-400))",
-                    boxShadow: "0 0 12px rgba(59,130,246,0.4)",
-                  }}
-                  variants={timelineDotVariant}
-                />
-
-                {/* Icon */}
+                {/* Timeline Node */}
                 <div
-                  className="absolute left-3 w-8 h-8 rounded-full flex items-center justify-center -translate-x-1/2 mt-6"
-                  style={{
-                    background: "var(--bg-secondary)",
-                    border: "2px solid var(--color-electric-500)",
-                    zIndex: 11,
-                    left: "20px",
-                  }}
+                  className="absolute left-4 sm:left-6 md:left-8 w-8 h-8 rounded-full bg-white border-2 border-[#1B1F3B] -translate-x-1/2 flex items-center justify-center text-[#1B1F3B] shadow-sm z-10 mt-6"
                 >
-                  <Briefcase
-                    size={14}
-                    style={{ color: "var(--color-electric-400)" }}
-                  />
+                  <Briefcase size={14} />
                 </div>
 
-                {/* Content Card */}
-                <div className="glass-card p-6">
-                  {/* Type badge */}
-                  <span
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full mb-3"
-                    style={{
-                      background: "rgba(16,185,129,0.1)",
-                      color: "var(--color-emerald-400)",
-                    }}
-                  >
-                    {exp.type}
-                  </span>
+                {/* Timeline Card */}
+                <div
+                  className="ml-10 sm:ml-14 md:ml-16 rounded-2xl p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow duration-300"
+                  style={{
+                    background: "#F3F4F6",
+                    border: "1px solid #D1D5DB",
+                  }}
+                >
+                  {/* Badges Row: Duration, Type Tag, Location */}
+                  <div className="flex flex-wrap items-center gap-2.5 mb-3">
+                    {/* Duration */}
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1 rounded-full bg-white text-[#4A5568] border border-slate-200">
+                      <Calendar size={12} /> {exp.period}
+                    </span>
 
+                    {/* Type Chip */}
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1 rounded-full bg-[#1B1F3B] text-white shadow-xs">
+                      {exp.type}
+                    </span>
+
+                    {/* Location */}
+                    <span className="inline-flex items-center gap-1 text-xs text-[#6B7280]">
+                      <MapPin size={12} className="shrink-0" /> {exp.location}
+                    </span>
+                  </div>
+
+                  {/* Role Title */}
                   <h3
-                    className="text-xl font-bold mb-1"
-                    style={{ color: "var(--text-heading)" }}
+                    className="text-xl sm:text-2xl font-bold mb-1 font-[family-name:var(--font-display)]"
+                    style={{ color: "#1B1F3B" }}
                   >
                     {exp.role}
                   </h3>
 
+                  {/* Company */}
                   <p
-                    className="text-base font-medium mb-2"
-                    style={{ color: "var(--color-electric-400)" }}
+                    className="text-base font-semibold mb-3"
+                    style={{ color: "#4A5568" }}
                   >
                     {exp.company}
                   </p>
 
-                  <div
-                    className="flex flex-wrap gap-4 text-xs mb-4"
-                    style={{ color: "var(--text-secondary)" }}
-                  >
-                    <span className="flex items-center gap-1">
-                      <Calendar size={13} /> {exp.duration}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <MapPin size={13} /> {exp.location}
-                    </span>
-                  </div>
-
+                  {/* Overview description */}
                   <p
-                    className="text-sm mb-4 leading-relaxed"
+                    className="text-sm leading-relaxed mb-5"
                     style={{ color: "var(--text-secondary)" }}
                   >
                     {exp.description}
                   </p>
 
-                  {/* Responsibilities */}
-                  <ul className="space-y-2 mb-4">
-                    {exp.responsibilities.map((resp, i) => (
-                      <li
-                        key={i}
-                        className="text-sm flex items-start gap-2"
-                        style={{ color: "var(--text-secondary)" }}
-                      >
-                        <span
-                          className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
-                          style={{ background: "var(--color-electric-400)" }}
-                        />
-                        {resp}
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Responsibilities Bullets */}
+                  {exp.bullets && exp.bullets.length > 0 && (
+                    <div className="mb-6">
+                      <p className="text-xs font-bold uppercase tracking-wider text-[#1B1F3B] mb-2.5">
+                        Key Responsibilities &amp; Impact:
+                      </p>
+                      <ul className="space-y-2.5">
+                        {exp.bullets.map((resp, i) => (
+                          <li
+                            key={i}
+                            className="text-sm flex items-start gap-2.5 text-[#334155] leading-relaxed"
+                          >
+                            <CheckCircle2
+                              size={16}
+                              className="shrink-0 mt-0.5"
+                              style={{ color: "var(--slate-accent)" }}
+                            />
+                            <span>{resp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
 
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {exp.technologies.map((tech) => (
-                      <span key={tech} className="tech-tag">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
+                  {/* Tech Chips */}
+                  {exp.tech && exp.tech.length > 0 && (
+                    <div className="pt-4 border-t border-slate-200/80">
+                      <p className="text-xs font-bold uppercase tracking-wider text-[#1B1F3B] mb-2.5">
+                        Technologies &amp; Frameworks:
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {exp.tech.map((tech) => (
+                          <span
+                            key={tech}
+                            className="bg-white text-slate-700 border border-slate-200 rounded-full px-3 py-1 text-xs font-medium hover:border-slate-300 transition-colors select-none"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -18,6 +18,7 @@ import { GithubIcon, LinkedinIcon } from "@/components/Icons";
 import SectionHeading from "./SectionHeading";
 import { fadeLeftVariant, fadeRightVariant } from "@/lib/animations";
 import type { SiteSettings } from "@/lib/data";
+import { submitContactMessage } from "@/lib/actions/contact";
 
 interface ContactProps {
   settings: SiteSettings;
@@ -127,8 +128,8 @@ export default function Contact({ settings }: ContactProps) {
     setIsLoading(true);
 
     try {
-      // Simulate submission delay
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      // Save submission to messages table
+      await submitContactMessage(formState);
 
       // Keep existing submit behavior
       alert("Thank you for your message! I'll get back to you soon.");

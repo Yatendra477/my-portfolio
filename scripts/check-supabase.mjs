@@ -61,14 +61,15 @@ try {
     },
   });
 
+  await response.text();
   if (response.ok) {
     console.log(`OK ${response.status}`);
-    process.exit(0);
+    process.exitCode = 0;
   } else {
     console.log(`FAILED ${response.status}`);
-    process.exit(1);
+    process.exitCode = 1;
   }
 } catch {
   console.log("FAILED (network error)");
-  process.exit(1);
+  process.exitCode = 1;
 }

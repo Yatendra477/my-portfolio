@@ -34,7 +34,8 @@ INSERT INTO site_settings (
   'Yatendra Verma | Python Developer & AI/ML Engineer',
   'Portfolio of Yatendra Verma — Python Developer and AI/ML Engineer specializing in Computer Vision, Machine Learning, and backend development.',
   ''
-);
+)
+ON CONFLICT DO NOTHING;
 
 -- ── section_visibility ────────────────────────────────────────
 INSERT INTO section_visibility (section_key, is_visible) VALUES
@@ -48,7 +49,8 @@ INSERT INTO section_visibility (section_key, is_visible) VALUES
   ('achievements',   true),
   ('resume',         true),
   ('testimonials',   false),  -- hidden until real testimonials are added
-  ('contact',        true);
+  ('contact',        true)
+ON CONFLICT (section_key) DO NOTHING;
 
 -- ── about_highlights ─────────────────────────────────────────
 INSERT INTO about_highlights (sort_order, icon, title, description) VALUES
@@ -57,7 +59,8 @@ INSERT INTO about_highlights (sort_order, icon, title, description) VALUES
   (3, 'Brain',     'Artificial Intelligence', 'Hands-on experience with ML/DL frameworks, neural networks, and intelligent system design.'),
   (4, 'Eye',       'Computer Vision',       'Specialized in image processing, face recognition, object detection, and real-time visual systems.'),
   (5, 'Users',     'Leadership',            'Active participant in hackathons, tech events, and collaborative engineering projects.'),
-  (6, 'TrendingUp','Continuous Learning',   'Always exploring emerging technologies, earning certifications, and expanding technical horizons.');
+  (6, 'TrendingUp','Continuous Learning',   'Always exploring emerging technologies, earning certifications, and expanding technical horizons.')
+ON CONFLICT DO NOTHING;
 
 -- ── about_stats ───────────────────────────────────────────────
 INSERT INTO about_stats (sort_order, label, value, suffix) VALUES
@@ -65,7 +68,8 @@ INSERT INTO about_stats (sort_order, label, value, suffix) VALUES
   (2, 'Certifications Earned', 5,   ''),
   (3, 'Technologies Learned',  21,  '+'),
   (4, 'LeetCode Problems',     200, '+'),
-  (5, 'Hackathons',            2,   '+');
+  (5, 'Hackathons',            2,   '+')
+ON CONFLICT DO NOTHING;
 
 -- ── education ─────────────────────────────────────────────────
 INSERT INTO education (sort_order, period, title, subtitle, institution, location, tags) VALUES
@@ -73,7 +77,8 @@ INSERT INTO education (sort_order, period, title, subtitle, institution, locatio
   (2, '2022',        'Higher Secondary (12th Grade)', 'Science — CBSE',         'Gyan Sagar International School', 'Hoshangabad, India', '{}'),
   (3, '2022 — 2026', 'Bachelor of Technology (B.Tech)', 'Robotics & Automation', 'Medicaps University',             'Indore, India',
    ARRAY['Data Structures','Algorithms','OOP','DBMS','Operating Systems','Computer Networks','Computer Vision','Machine Learning','AI']
-  );
+  )
+ON CONFLICT DO NOTHING;
 
 -- ── skill_categories & skills ─────────────────────────────────
 WITH inserted_cats AS (
@@ -84,6 +89,7 @@ WITH inserted_cats AS (
     (4, 'Database'),
     (5, 'AI & Computer Vision'),
     (6, 'Tools & Platforms')
+  ON CONFLICT (name) DO NOTHING
   RETURNING id, name
 )
 INSERT INTO skills (sort_order, category_id, name, description, icon, level)
@@ -120,7 +126,8 @@ JOIN (VALUES
   (4, 'Tools & Platforms',     'Arduino',      'Microcontroller & embedded systems',             'CircuitBoard',75),
   (5, 'Tools & Platforms',     'Linux',        'CLI, scripting & server environments',           'Terminal',   65)
 ) AS s(sort_order, cat_name, name, description, icon, level)
-  ON c.name = s.cat_name;
+  ON c.name = s.cat_name
+ON CONFLICT DO NOTHING;
 
 -- ── experience ────────────────────────────────────────────────
 INSERT INTO experience (sort_order, role, company, period, location, type, description, bullets, tech) VALUES
@@ -138,7 +145,8 @@ INSERT INTO experience (sort_order, role, company, period, location, type, descr
      'Developed automation scripts to streamline development workflows'
    ],
    ARRAY['Python','Django','Flask','MySQL','GitHub','NumPy','Pandas','Matplotlib']
-  );
+  )
+ON CONFLICT DO NOTHING;
 
 -- ── projects ──────────────────────────────────────────────────
 INSERT INTO projects (sort_order, title, description, category, date_text, bullets, tech, image_url, github_url, demo_url, is_featured, is_visible) VALUES
@@ -201,7 +209,8 @@ INSERT INTO projects (sort_order, title, description, category, date_text, bulle
    'https://github.com/Yatendra477/non-profit-triage-agent',
    'https://non-profit-triage-agent.onrender.com/ui/',
    true, true
-  );
+  )
+ON CONFLICT DO NOTHING;
 
 -- ── certifications ────────────────────────────────────────────
 INSERT INTO certifications (sort_order, title, issuer, period, description, credential_id, credential_url) VALUES
@@ -244,7 +253,8 @@ INSERT INTO certifications (sort_order, title, issuer, period, description, cred
    'Comprehensive Python 3 certification covering core concepts, clean code practices, and real-world application development.',
    '',
    ''
-  );
+  )
+ON CONFLICT DO NOTHING;
 
 -- ── achievements ──────────────────────────────────────────────
 INSERT INTO achievements (sort_order, category, title, description, icon) VALUES
@@ -259,13 +269,13 @@ INSERT INTO achievements (sort_order, category, title, description, icon) VALUES
    'Award'),
   (4, 'Open Source',             'Open Source Contributor',
    'Active GitHub presence with multiple public repositories and contributions to collaborative projects.',
-   'GitBranch');
+   'GitBranch')
+ON CONFLICT DO NOTHING;
 
 -- ── testimonials ──────────────────────────────────────────────
 -- No real testimonials yet. Section is hidden via section_visibility.
 -- Add rows here when you have real quotes. Set is_visible = true to show them.
 
 -- ── admins ────────────────────────────────────────────────────
--- Replace [FILL: your login email] with your actual Supabase Auth login email
--- before running this file.
-INSERT INTO admins (email) VALUES ('[yatendrav477@gmail.com]');
+-- Admin rows are added manually by the owner only.
+-- No inserts are included in seed or migration files.

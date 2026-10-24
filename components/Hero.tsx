@@ -141,6 +141,7 @@ export default function Hero({ settings, projects, certifications }: HeroProps) 
                 </a>
                 <a
                   href={settings.resumeUrl}
+                  download="Yatendra_Verma_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hero-btn-ghost"
@@ -200,7 +201,7 @@ export default function Hero({ settings, projects, certifications }: HeroProps) 
                 {/* Transparent Cutout Image */}
                 <Image
                   src={settings.profileImageUrl || "/images/profile-cutout.png"}
-                  alt={`${settings.name} — profile cutout`}
+                  alt={`${settings.name} - profile cutout`}
                   fill
                   className="object-contain object-bottom drop-shadow-xl"
                   sizes="(max-width: 640px) 300px, (max-width: 1024px) 440px, 480px"

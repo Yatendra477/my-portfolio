@@ -197,8 +197,9 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     const { data, error } = await supabase
       .from("site_settings")
       .select("*")
+      .order("updated_at", { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
     if (error || !data) return FALLBACK_SITE_SETTINGS;
     return {
       name: data.name,

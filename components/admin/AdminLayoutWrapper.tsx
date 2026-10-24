@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Menu, X, ShieldCheck, ExternalLink } from "lucide-react";
 import AdminSidebar from "./AdminSidebar";
+import AdminInactivityWatcher from "./AdminInactivityWatcher";
 import { AdminToastProvider } from "./AdminToast";
 
 interface AdminLayoutWrapperProps {
@@ -21,14 +22,30 @@ export default function AdminLayoutWrapper({
 
   return (
     <AdminToastProvider>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row antialiased">
+      <AdminInactivityWatcher />
+      <div
+        className="min-h-screen text-slate-100 flex flex-col md:flex-row antialiased"
+        style={{ background: "#050A14" }}
+      >
         {/* Mobile Header Bar */}
-        <header className="md:hidden flex items-center justify-between px-4 py-3 bg-slate-950 border-b border-slate-800 sticky top-0 z-30">
+        <header
+          className="md:hidden flex items-center justify-between px-4 py-3 sticky top-0 z-30"
+          style={{ background: "#0B1220", borderBottom: "1px solid #2A3140" }}
+        >
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            <div
+              className="p-1.5 rounded-lg"
+              style={{
+                background: "rgba(74, 85, 104, 0.2)",
+                color: "#E2E8F0",
+                border: "1px solid rgba(74, 85, 104, 0.4)",
+              }}
+            >
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <span className="font-bold text-sm text-white">Portfolio Admin</span>
+            <span className="font-bold text-sm text-white font-[family-name:var(--font-display)]">
+              Portfolio Admin
+            </span>
           </div>
 
           <div className="flex items-center gap-2">

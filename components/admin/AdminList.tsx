@@ -150,8 +150,8 @@ export default function AdminList<T extends AdminListItem>({
       {/* Header bar */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-white tracking-tight">{title}</h2>
-          {description && <p className="text-sm text-slate-400 mt-1">{description}</p>}
+          <h2 className="text-2xl font-bold text-white tracking-tight font-[family-name:var(--font-display)]">{title}</h2>
+          {description && <p className="text-sm text-slate-400 mt-1 font-[family-name:var(--font-sans)]">{description}</p>}
         </div>
 
         <button
@@ -159,7 +159,16 @@ export default function AdminList<T extends AdminListItem>({
             setEditingItem(null);
             setIsCreating(true);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium shadow-lg shadow-indigo-900/30 transition-all self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-white text-sm font-medium shadow-md transition-all self-start sm:self-auto font-[family-name:var(--font-sans)]"
+          style={{
+            background: "#4A5568",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "#2D3748";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "#4A5568";
+          }}
         >
           <Plus className="w-4 h-4" />
           <span>{newItemLabel}</span>
@@ -175,14 +184,24 @@ export default function AdminList<T extends AdminListItem>({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search entries..."
-            className="w-full pl-10 pr-4 py-2 text-sm rounded-xl bg-slate-900/80 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-10 pr-4 py-2 text-sm rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400 font-[family-name:var(--font-sans)]"
+            style={{
+              background: "#0B1220",
+              border: "1px solid #2A3140",
+            }}
           />
         </div>
       )}
 
       {/* Create / Edit Form Modal or Inline */}
       {(isCreating || editingItem) && (
-        <div className="p-6 rounded-2xl bg-slate-950 border border-indigo-500/30 shadow-2xl animate-in fade-in slide-in-from-top-2">
+        <div
+          className="p-6 rounded-2xl shadow-2xl animate-in fade-in slide-in-from-top-2"
+          style={{
+            background: "#0B1220",
+            border: "1px solid #2A3140",
+          }}
+        >
           <AdminForm
             title={editingItem ? "Edit Item" : newItemLabel}
             fields={formFields}
@@ -214,7 +233,11 @@ export default function AdminList<T extends AdminListItem>({
           return (
             <div
               key={item.id}
-              className="flex items-center justify-between p-4 rounded-xl bg-slate-900/70 hover:bg-slate-900 border border-slate-800/80 transition-all gap-4"
+              className="flex items-center justify-between p-4 rounded-xl transition-all gap-4"
+              style={{
+                background: "#0B1220",
+                border: "1px solid #2A3140",
+              }}
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
                 {/* Reorder controls */}

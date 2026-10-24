@@ -116,9 +116,15 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-[family-name:var(--font-sans)]">
       {/* Top Filter and Search Bar */}
-      <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div
+        className="p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4"
+        style={{
+          background: "#0B1220",
+          border: "1px solid #2A3140",
+        }}
+      >
         {/* Filter Pills */}
         <div className="flex items-center gap-1.5 self-start sm:self-auto">
           <button
@@ -126,8 +132,8 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
             onClick={() => setFilter("all")}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
               filter === "all"
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "bg-slate-800/60 text-slate-400 hover:text-white"
+                ? "bg-[#4A5568] text-white shadow-sm"
+                : "bg-slate-900 text-slate-400 hover:text-white border border-[#2A3140]"
             }`}
           >
             All ({messages.length})
@@ -138,8 +144,8 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
             onClick={() => setFilter("unread")}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors ${
               filter === "unread"
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "bg-slate-800/60 text-slate-400 hover:text-white"
+                ? "bg-[#4A5568] text-white shadow-sm"
+                : "bg-slate-900 text-slate-400 hover:text-white border border-[#2A3140]"
             }`}
           >
             <span>Unread</span>
@@ -155,8 +161,8 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
             onClick={() => setFilter("read")}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-colors ${
               filter === "read"
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "bg-slate-800/60 text-slate-400 hover:text-white"
+                ? "bg-[#4A5568] text-white shadow-sm"
+                : "bg-slate-900 text-slate-400 hover:text-white border border-[#2A3140]"
             }`}
           >
             Read ({messages.length - unreadCount})
@@ -171,7 +177,11 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search sender, subject..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl bg-slate-950/60 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400"
+            style={{
+              background: "#050A14",
+              border: "1px solid #2A3140",
+            }}
           />
         </div>
       </div>
@@ -192,14 +202,14 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
                 }}
                 className={`p-4 rounded-xl border transition-all cursor-pointer relative group ${
                   isSelected
-                    ? "bg-indigo-950/40 border-indigo-500 shadow-md"
+                    ? "bg-[#0E1729] border-[#4A5568] shadow-md"
                     : msg.is_read
-                    ? "bg-slate-900/40 border-slate-800/60 hover:bg-slate-900"
-                    : "bg-slate-900/90 border-slate-700/80 hover:bg-slate-900 shadow-sm"
+                    ? "bg-[#080E1A] border-[#2A3140]/60 hover:bg-[#0B1220]"
+                    : "bg-[#0B1220] border-[#2A3140] hover:bg-[#0E1729] shadow-sm"
                 }`}
               >
                 {!msg.is_read && (
-                  <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-indigo-500" />
+                  <span className="absolute top-4 right-4 w-2 h-2 rounded-full bg-[#16A34A]" />
                 )}
 
                 <div className="flex items-center justify-between gap-2 mb-1">
@@ -217,7 +227,7 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
 
                 <p
                   className={`text-xs mb-1 truncate ${
-                    !msg.is_read ? "font-semibold text-indigo-300" : "text-slate-400"
+                    !msg.is_read ? "font-semibold text-slate-200" : "text-slate-400"
                   }`}
                 >
                   {msg.subject || "(No subject)"}
@@ -243,14 +253,20 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
 
         {/* Selected Message Detailed View */}
         {selectedMessage && (
-          <div className="lg:col-span-7 p-6 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-6 sticky top-6 animate-in fade-in">
+          <div
+            className="lg:col-span-7 p-6 rounded-2xl shadow-xl space-y-6 sticky top-6 animate-in fade-in"
+            style={{
+              background: "#0B1220",
+              border: "1px solid #2A3140",
+            }}
+          >
             {/* Header / Actions */}
-            <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-800">
+            <div className="flex items-start justify-between gap-4 pb-4" style={{ borderBottom: "1px solid #2A3140" }}>
               <div className="min-w-0 flex-1">
-                <span className="text-[11px] font-semibold text-indigo-400 uppercase tracking-wider block">
+                <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
                   Subject
                 </span>
-                <h2 className="text-lg font-bold text-white mt-0.5 break-words">
+                <h2 className="text-lg font-bold text-white mt-0.5 break-words font-[family-name:var(--font-display)]">
                   {selectedMessage.subject || "(No subject)"}
                 </h2>
                 <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-1">
@@ -269,7 +285,7 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
                   {selectedMessage.is_read ? (
                     <Mail className="w-4 h-4" />
                   ) : (
-                    <MailOpen className="w-4 h-4 text-indigo-400" />
+                    <MailOpen className="w-4 h-4 text-emerald-400" />
                   )}
                 </button>
 
@@ -285,18 +301,33 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
             </div>
 
             {/* Sender Details */}
-            <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80 space-y-2">
+            <div
+              className="p-4 rounded-xl space-y-2"
+              style={{
+                background: "#050A14",
+                border: "1px solid #2A3140",
+              }}
+            >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
                   <p className="text-xs font-semibold text-slate-400">From</p>
-                  <p className="text-sm font-bold text-white">{selectedMessage.name}</p>
+                  <p className="text-sm font-bold text-white font-[family-name:var(--font-display)]">{selectedMessage.name}</p>
                 </div>
 
                 <a
                   href={`mailto:${selectedMessage.email}?subject=Re: ${encodeURIComponent(
                     selectedMessage.subject || ""
                   )}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-xs font-semibold shadow-md transition-colors"
+                  style={{
+                    background: "#4A5568",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.background = "#2D3748";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLAnchorElement).style.background = "#4A5568";
+                  }}
                 >
                   <span>Reply via Email</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -321,7 +352,13 @@ export default function MessagesInbox({ initialMessages }: MessagesInboxProps) {
             {/* Message Body */}
             <div className="space-y-2">
               <span className="text-xs font-semibold text-slate-400 block">Message Content</span>
-              <div className="p-4 rounded-xl bg-slate-950/40 border border-slate-800 text-sm text-slate-200 leading-relaxed whitespace-pre-wrap font-sans">
+              <div
+                className="p-4 rounded-xl text-sm text-slate-200 leading-relaxed whitespace-pre-wrap font-sans"
+                style={{
+                  background: "#050A14",
+                  border: "1px solid #2A3140",
+                }}
+              >
                 {selectedMessage.message}
               </div>
             </div>

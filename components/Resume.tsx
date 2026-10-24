@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Download, FileText, CheckCircle2 } from "lucide-react";
+import { Download, FileText, CheckCircle2, Eye } from "lucide-react";
 import { resumeHighlights } from "@/data/portfolio";
 import SectionHeading from "./SectionHeading";
 import { fadeUpVariant, staggerContainer } from "@/lib/animations";
@@ -95,21 +95,41 @@ export default function Resume({ settings }: ResumeProps) {
               ))}
             </motion.div>
 
-            {/* Dark Download button */}
-            <motion.a
-              href={settings.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Download Yatendra Verma's Resume PDF"
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-lg text-sm font-semibold text-white shadow-sm transition-all duration-200"
-              style={{
-                background: "#4A5568",
-              }}
-              whileHover={{ scale: 1.03, backgroundColor: "#2D3748" }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Download size={16} /> Download Resume
-            </motion.a>
+            {/* Action buttons: Preview and Download */}
+            <div className="flex flex-wrap items-center gap-3">
+              <motion.a
+                href={settings.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Preview Yatendra Verma's Resume PDF in new tab"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200"
+                style={{
+                  background: "transparent",
+                  border: "1.5px solid #4A5568",
+                  color: "#1B1F3B",
+                }}
+                whileHover={{ scale: 1.02, backgroundColor: "rgba(74, 85, 104, 0.08)" }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Eye size={16} /> Preview Resume
+              </motion.a>
+
+              <motion.a
+                href={settings.resumeUrl}
+                download="Yatendra_Verma_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Download Yatendra Verma's Resume PDF"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold text-white shadow-sm transition-all duration-200"
+                style={{
+                  background: "#4A5568",
+                }}
+                whileHover={{ scale: 1.02, backgroundColor: "#2D3748" }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Download size={16} /> Download Resume
+              </motion.a>
+            </div>
 
             {showLastUpdated && (
               <p className="text-xs mt-4" style={{ color: "#6B7280" }}>

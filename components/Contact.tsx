@@ -73,6 +73,7 @@ export default function Contact({ settings }: ContactProps) {
   const [copied, setCopied] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   const [formState, setFormState] = useState({
@@ -81,6 +82,7 @@ export default function Contact({ settings }: ContactProps) {
     phone: "",
     subject: "",
     message: "",
+    hp: "",
   });
 
   const handleCopy = (value: string, label: string) => {
@@ -120,6 +122,7 @@ export default function Contact({ settings }: ContactProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSuccessMessage(null);
+    setErrorMessage(null);
 
     if (!validate()) {
       return;
@@ -128,16 +131,19 @@ export default function Contact({ settings }: ContactProps) {
     setIsLoading(true);
 
     try {
-      // Save submission to messages table
-      await submitContactMessage(formState);
-
-      // Keep existing submit behavior
-      alert("Thank you for your message! I'll get back to you soon.");
-      setSuccessMessage("Thank you for your message! I'll get back to you soon.");
-      setFormState({ name: "", email: "", phone: "", subject: "", message: "" });
-      setFormErrors({});
+      const res = await submitContactMessage(formState);
+      if (res.success) {
+        setSuccessMessage(res.message || "Thank you! Your message has been sent successfully.");
+        setFormState({ name: "", email: "", phone: "", subject: "", message: "", hp: "" });
+        setFormErrors({});
+      } else {
+        setErrorMessage(res.message || "Could not send message. Please try again.");
+        if (res.errors) {
+          setFormErrors(res.errors);
+        }
+      }
     } catch {
-      // In case of unexpected issue
+      setErrorMessage("A network error occurred. Please try again or reach out by email directly.");
     } finally {
       setIsLoading(false);
     }
@@ -147,7 +153,7 @@ export default function Contact({ settings }: ContactProps) {
     <section
       id="contact"
       className="section"
-      style={{ background: "var(--bg-primary)" }}
+      style={{ background: "#F3F4F6" }}
     >
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
         <SectionHeading
@@ -186,8 +192,8 @@ export default function Contact({ settings }: ContactProps) {
                     key={card.label}
                     className="rounded-2xl p-4 flex items-center gap-4 transition-all duration-200 group hover:shadow-sm"
                     style={{
-                      background: "#F3F4F6",
-                      border: "1px solid #D1D5DB",
+                      background: "#FFFFFF",
+                      border: "1px solid #E2E8F0",
                     }}
                   >
                     <div
@@ -248,8 +254,8 @@ export default function Contact({ settings }: ContactProps) {
             <div
               className="relative rounded-3xl p-6 overflow-hidden flex flex-col items-center justify-center min-h-[200px]"
               style={{
-                background: "#F3F4F6",
-                border: "1px solid #D1D5DB",
+                background: "#FFFFFF",
+                border: "1px solid #E2E8F0",
               }}
             >
               {/* Soft gray organic blob in the background */}
@@ -294,10 +300,10 @@ export default function Contact({ settings }: ContactProps) {
             <form
               onSubmit={handleSubmit}
               noValidate
-              className="rounded-3xl p-6 sm:p-8 lg:p-10 shadow-sm"
+              className="rounded-3xl p-6 sm:p-8 lg:p-10 shadow-md"
               style={{
-                background: "#F3F4F6",
-                border: "1px solid #D1D5DB",
+                background: "#FFFFFF",
+                border: "1px solid #E2E8F0",
               }}
             >
               <div className="mb-6">
@@ -323,6 +329,29 @@ export default function Contact({ settings }: ContactProps) {
                   <span>{successMessage}</span>
                 </div>
               )}
+
+              {/* Status / Error message */}
+              {errorMessage && (
+                <div
+                  role="alert"
+                  className="mb-6 p-4 rounded-xl flex items-center gap-3 bg-rose-50 border border-rose-200 text-rose-800 text-sm font-medium shadow-xs"
+                >
+                  <AlertCircle size={18} className="text-rose-600 shrink-0" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+
+              {/* Anti-spam honeypot (invisible to humans) */}
+              <input
+                type="text"
+                name="hp"
+                value={formState.hp}
+                onChange={(e) => setFormState({ ...formState, hp: e.target.value })}
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
 
               {/* Form Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">

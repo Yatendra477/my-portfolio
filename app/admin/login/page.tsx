@@ -13,6 +13,9 @@ function LoginFormInner() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(() => {
+    if (urlError === "session_expired") {
+      return "Your admin session expired due to inactivity. Please sign in again.";
+    }
     if (urlError === "unauthorized") {
       return "Access denied. Your account does not have administrator privileges.";
     }
@@ -44,14 +47,29 @@ function LoginFormInner() {
   };
 
   return (
-    <div className="relative w-full max-w-md p-8 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-2xl backdrop-blur-xl">
+    <div
+      className="relative w-full max-w-md p-8 rounded-2xl shadow-2xl backdrop-blur-xl"
+      style={{
+        background: "#0B1220",
+        border: "1px solid #2A3140",
+      }}
+    >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="inline-flex p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4 shadow-inner">
+        <div
+          className="inline-flex p-3 rounded-2xl mb-4"
+          style={{
+            background: "rgba(74, 85, 104, 0.2)",
+            color: "#E2E8F0",
+            border: "1px solid rgba(74, 85, 104, 0.4)",
+          }}
+        >
           <ShieldCheck className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-white tracking-tight">Admin Portal</h1>
-        <p className="text-sm text-slate-400 mt-1.5">
+        <h1 className="text-2xl font-bold text-white tracking-tight font-[family-name:var(--font-display)]">
+          Admin Portal
+        </h1>
+        <p className="text-sm text-slate-400 mt-1.5 font-[family-name:var(--font-sans)]">
           Sign in with authorized administrator credentials
         </p>
       </div>
@@ -67,7 +85,7 @@ function LoginFormInner() {
       {/* Login Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5 font-[family-name:var(--font-sans)]">
             Email Address
           </label>
           <div className="relative">
@@ -79,13 +97,17 @@ function LoginFormInner() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@example.com"
-              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl bg-slate-950/60 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all font-[family-name:var(--font-sans)]"
+              style={{
+                background: "rgba(5, 10, 20, 0.8)",
+                border: "1px solid #2A3140",
+              }}
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5 font-[family-name:var(--font-sans)]">
             Password
           </label>
           <div className="relative">
@@ -97,7 +119,11 @@ function LoginFormInner() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl bg-slate-950/60 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-all font-[family-name:var(--font-sans)]"
+              style={{
+                background: "rgba(5, 10, 20, 0.8)",
+                border: "1px solid #2A3140",
+              }}
             />
           </div>
         </div>
@@ -105,7 +131,16 @@ function LoginFormInner() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full mt-2 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-[0.99] text-white text-sm font-semibold shadow-lg shadow-indigo-900/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+          className="w-full mt-2 py-3 px-4 rounded-xl text-white text-sm font-semibold shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 font-[family-name:var(--font-sans)]"
+          style={{
+            background: "#4A5568",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "#2D3748";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "#4A5568";
+          }}
         >
           {loading ? (
             <>
@@ -119,7 +154,10 @@ function LoginFormInner() {
       </form>
 
       {/* Footer note: no sign-up link */}
-      <div className="mt-8 pt-4 border-t border-slate-800/80 text-center">
+      <div
+        className="mt-8 pt-4 text-center"
+        style={{ borderTop: "1px solid #2A3140" }}
+      >
         <p className="text-xs text-slate-500">
           Protected area. Unauthorized access attempts are monitored and restricted.
         </p>
@@ -130,11 +168,20 @@ function LoginFormInner() {
 
 export default function AdminLoginPage() {
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 selection:bg-indigo-500 selection:text-white">
+    <div
+      className="min-h-screen flex items-center justify-center p-4 selection:bg-slate-700 selection:text-white"
+      style={{ background: "#050A14" }}
+    >
       {/* Background glow effects */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-slate-700/10 rounded-full blur-3xl" />
+        <div
+          className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full blur-3xl opacity-20"
+          style={{ background: "#4A5568" }}
+        />
+        <div
+          className="absolute bottom-1/4 left-1/3 w-80 h-80 rounded-full blur-3xl opacity-10"
+          style={{ background: "#2A3140" }}
+        />
       </div>
 
       <Suspense

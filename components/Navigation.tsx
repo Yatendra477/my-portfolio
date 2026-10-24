@@ -33,6 +33,18 @@ export default function Navigation({ navLinks, settings }: NavigationProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Ensure fresh visit without hash begins at the top of the page
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+      if (!window.location.hash) {
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      }
+    }
+  }, []);
+
   // Close mobile menu on Escape
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

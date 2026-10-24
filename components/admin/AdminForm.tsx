@@ -146,11 +146,15 @@ export default function AdminForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-md shadow-xl text-slate-100"
+      className="p-6 rounded-2xl backdrop-blur-md shadow-xl text-slate-100 font-[family-name:var(--font-sans)]"
+      style={{
+        background: "#0B1220",
+        border: "1px solid #2A3140",
+      }}
     >
       {(title || description) && (
-        <div className="mb-6 pb-4 border-b border-slate-800">
-          {title && <h2 className="text-xl font-bold text-white">{title}</h2>}
+        <div className="mb-6 pb-4" style={{ borderBottom: "1px solid #2A3140" }}>
+          {title && <h2 className="text-xl font-bold text-white font-[family-name:var(--font-display)]">{title}</h2>}
           {description && <p className="text-sm text-slate-400 mt-1">{description}</p>}
         </div>
       )}
@@ -341,7 +345,11 @@ export default function AdminForm({
                 <select
                   value={String(val ?? "")}
                   onChange={(e) => handleChange(field.name, e.target.value)}
-                  className="w-full px-3.5 py-2 text-sm rounded-xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-3.5 py-2 text-sm rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-slate-400"
+                  style={{
+                    background: "#050A14",
+                    border: "1px solid #2A3140",
+                  }}
                 >
                   {field.options?.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -368,7 +376,11 @@ export default function AdminForm({
                   placeholder={field.placeholder}
                   required={field.required}
                   onChange={(e) => handleChange(field.name, e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y"
+                  className="w-full px-3.5 py-2.5 text-sm rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400 resize-y"
+                  style={{
+                    background: "#050A14",
+                    border: "1px solid #2A3140",
+                  }}
                 />
               </div>
             );
@@ -394,20 +406,28 @@ export default function AdminForm({
                     field.type === "number" ? Number(e.target.value) : e.target.value
                   )
                 }
-                className="w-full px-3.5 py-2 text-sm rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3.5 py-2 text-sm rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                style={{
+                  background: "#050A14",
+                  border: "1px solid #2A3140",
+                }}
               />
             </div>
           );
         })}
       </div>
 
-      <div className="mt-8 pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+      <div className="mt-8 pt-4 flex items-center justify-end gap-3" style={{ borderTop: "1px solid #2A3140" }}>
         {onCancel && (
           <button
             type="button"
             disabled={isSubmitting}
             onClick={onCancel}
-            className="px-4 py-2 text-sm font-medium rounded-xl text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium rounded-xl text-slate-300 hover:text-white transition-colors disabled:opacity-50"
+            style={{
+              background: "rgba(5, 10, 20, 0.6)",
+              border: "1px solid #2A3140",
+            }}
           >
             Cancel
           </button>
@@ -415,7 +435,16 @@ export default function AdminForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-5 py-2.5 text-sm font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-900/30 transition-all flex items-center gap-2 disabled:opacity-50"
+          className="px-5 py-2.5 text-sm font-medium rounded-xl text-white shadow-md transition-all flex items-center gap-2 disabled:opacity-50"
+          style={{
+            background: "#4A5568",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "#2D3748";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "#4A5568";
+          }}
         >
           {isSubmitting ? (
             <>

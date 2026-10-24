@@ -33,9 +33,15 @@ export default function ConfirmDialog({
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirm-dialog-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in"
     >
-      <div className="w-full max-w-md p-6 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl text-slate-100 animate-in zoom-in-95">
+      <div
+        className="w-full max-w-md p-6 rounded-2xl shadow-2xl text-slate-100 animate-in zoom-in-95 font-[family-name:var(--font-sans)]"
+        style={{
+          background: "#0B1220",
+          border: "1px solid #2A3140",
+        }}
+      >
         <div className="flex items-center gap-3 mb-4">
           <div
             className={`p-2.5 rounded-xl ${
@@ -46,7 +52,7 @@ export default function ConfirmDialog({
           >
             <AlertTriangle className="w-5 h-5" />
           </div>
-          <h3 id="confirm-dialog-title" className="text-lg font-semibold text-white">
+          <h3 id="confirm-dialog-title" className="text-lg font-semibold text-white font-[family-name:var(--font-display)]">
             {title}
           </h3>
         </div>
@@ -60,7 +66,11 @@ export default function ConfirmDialog({
             type="button"
             disabled={isLoading}
             onClick={onCancel}
-            className="px-4 py-2 text-sm font-medium rounded-xl text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 transition-colors disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium rounded-xl text-slate-300 hover:text-white transition-colors disabled:opacity-50"
+            style={{
+              background: "rgba(5, 10, 20, 0.6)",
+              border: "1px solid #2A3140",
+            }}
           >
             {cancelLabel}
           </button>
@@ -71,7 +81,7 @@ export default function ConfirmDialog({
             className={`px-4 py-2 text-sm font-medium rounded-xl text-white transition-colors disabled:opacity-50 flex items-center gap-2 ${
               isDestructive
                 ? "bg-rose-600 hover:bg-rose-500 shadow-lg shadow-rose-900/30"
-                : "bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-900/30"
+                : "bg-[#4A5568] hover:bg-[#2D3748] shadow-md"
             }`}
           >
             {isLoading && (

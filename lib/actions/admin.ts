@@ -126,15 +126,29 @@ export async function updateSiteSettingsAction(rawValues: Record<string, unknown
 
   const supabase = await createClient();
 
-  // Find existing row or insert
-  const { data: existing } = await supabase.from("site_settings").select("id").limit(1).maybeSingle();
+  // Find existing active row or insert
+  const { data: existing } = await supabase
+    .from("site_settings")
+    .select("id")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   let error;
   if (existing?.id) {
-    const res = await supabase.from("site_settings").update(parsed.data).eq("id", existing.id);
+    const res = await supabase
+      .from("site_settings")
+      .update({
+        ...parsed.data,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", existing.id);
     error = res.error;
   } else {
-    const res = await supabase.from("site_settings").insert(parsed.data);
+    const res = await supabase.from("site_settings").insert({
+      ...parsed.data,
+      updated_at: new Date().toISOString(),
+    });
     error = res.error;
   }
 
@@ -175,8 +189,9 @@ export async function uploadResumeAction(formData: FormData) {
   }
 
   const supabase = await createClient();
+  const timestamp = Date.now();
   const randomId = crypto.randomUUID();
-  const storagePath = `resumes/${randomId}.pdf`;
+  const storagePath = `resumes/resume-${timestamp}-${randomId}.pdf`;
 
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
@@ -202,8 +217,13 @@ export async function uploadResumeAction(formData: FormData) {
     year: "numeric",
   });
 
-  // Update site settings
-  const { data: existing } = await supabase.from("site_settings").select("id").limit(1).maybeSingle();
+  // Update site settings targeting the active row
+  const { data: existing } = await supabase
+    .from("site_settings")
+    .select("id")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
 
   if (existing?.id) {
     await supabase
@@ -211,12 +231,14 @@ export async function uploadResumeAction(formData: FormData) {
       .update({
         resume_url: publicUrl,
         resume_updated_at: updatedDateStr,
+        updated_at: new Date().toISOString(),
       })
       .eq("id", existing.id);
   } else {
     await supabase.from("site_settings").insert({
       resume_url: publicUrl,
       resume_updated_at: updatedDateStr,
+      updated_at: new Date().toISOString(),
     });
   }
 

@@ -57,20 +57,33 @@ export default function AdminSidebar({
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-full bg-slate-950 border-r border-slate-800 flex flex-col justify-between select-none">
+    <aside
+      className="w-64 h-full flex flex-col justify-between select-none"
+      style={{
+        background: "#0B1220",
+        borderRight: "1px solid #2A3140",
+      }}
+    >
       {/* Top Header */}
       <div>
-        <div className="p-5 border-b border-slate-800/80">
+        <div className="p-5 border-b" style={{ borderColor: "#2A3140" }}>
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              <ShieldCheck className="w-5 h-5" />
+            <div
+              className="p-2 rounded-xl"
+              style={{
+                background: "rgba(74, 85, 104, 0.2)",
+                color: "#E2E8F0",
+                border: "1px solid rgba(74, 85, 104, 0.4)",
+              }}
+            >
+              <ShieldCheck className="w-5 h-5 text-slate-200" />
             </div>
             <div>
-              <h1 className="text-sm font-bold text-white tracking-wide">
+              <h1 className="text-sm font-bold text-white tracking-wide font-[family-name:var(--font-display)]">
                 Portfolio Admin
               </h1>
-              <span className="text-[11px] text-emerald-400 font-medium flex items-center gap-1.5 mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[11px] font-medium flex items-center gap-1.5 mt-0.5" style={{ color: "#16A34A" }}>
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#16A34A" }} />
                 Live Control
               </span>
             </div>
@@ -81,10 +94,14 @@ export default function AdminSidebar({
               href="/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800/80 border border-slate-800 text-xs font-medium text-slate-300 hover:text-white transition-all group"
+              className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-white transition-all group"
+              style={{
+                background: "rgba(5, 10, 20, 0.6)",
+                border: "1px solid #2A3140",
+              }}
             >
               <span>View live site</span>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-indigo-400 transition-colors" />
+              <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-white transition-colors" />
             </Link>
           </div>
         </div>
@@ -105,11 +122,19 @@ export default function AdminSidebar({
                 key={item.href}
                 href={item.href}
                 onClick={onNavigate}
-                className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all ${
+                className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all"
+                style={
                   isActive
-                    ? "bg-indigo-600 text-white shadow-md shadow-indigo-950 font-semibold"
-                    : "text-slate-400 hover:text-slate-200 hover:bg-slate-900"
-                }`}
+                    ? {
+                        background: "#4A5568",
+                        color: "#FFFFFF",
+                        fontWeight: 600,
+                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
+                      }
+                    : {
+                        color: "#94A3B8",
+                      }
+                }
               >
                 <div className="flex items-center gap-3">
                   <Icon className={`w-4 h-4 ${isActive ? "text-white" : "text-slate-400"}`} />
@@ -120,7 +145,7 @@ export default function AdminSidebar({
                   <span
                     className={`px-1.5 py-0.5 rounded-full text-[10px] font-bold ${
                       isActive
-                        ? "bg-white text-indigo-700"
+                        ? "bg-white text-slate-900"
                         : "bg-rose-500/20 text-rose-400 border border-rose-500/30"
                     }`}
                   >
@@ -134,8 +159,11 @@ export default function AdminSidebar({
       </div>
 
       {/* Footer / User Profile & Logout */}
-      <div className="p-3 border-t border-slate-800/80 bg-slate-950/60">
-        <div className="px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-800/60 flex items-center justify-between gap-2">
+      <div className="p-3 border-t" style={{ borderColor: "#2A3140", background: "rgba(5, 10, 20, 0.5)" }}>
+        <div
+          className="px-3 py-2 rounded-xl flex items-center justify-between gap-2"
+          style={{ background: "#0B1220", border: "1px solid #2A3140" }}
+        >
           <div className="min-w-0 flex-1">
             <p className="text-[11px] text-slate-400 truncate">Logged in as</p>
             <p className="text-xs font-medium text-slate-200 truncate">{userEmail}</p>

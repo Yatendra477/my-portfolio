@@ -78,12 +78,24 @@ export default function ResumeUploadCard({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-[family-name:var(--font-sans)]">
       {/* Current File Status */}
-      <div className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-md">
-        <h2 className="text-base font-semibold text-white mb-4">Current Active Resume</h2>
+      <div
+        className="p-6 rounded-2xl shadow-xl backdrop-blur-md"
+        style={{
+          background: "#0B1220",
+          border: "1px solid #2A3140",
+        }}
+      >
+        <h2 className="text-base font-semibold text-white mb-4 font-[family-name:var(--font-display)]">Current Active Resume</h2>
 
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-slate-950/60 border border-slate-800 gap-4">
+        <div
+          className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl gap-4"
+          style={{
+            background: "#050A14",
+            border: "1px solid #2A3140",
+          }}
+        >
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
               <FileText className="w-6 h-6" />
@@ -101,10 +113,19 @@ export default function ResumeUploadCard({
             href={resumeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white border border-slate-700 transition-colors self-start sm:self-auto"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white transition-colors self-start sm:self-auto"
+            style={{
+              background: "#4A5568",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "#2D3748";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLAnchorElement).style.background = "#4A5568";
+            }}
           >
             <span>View / Download Current File</span>
-            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+            <ExternalLink className="w-3.5 h-3.5 text-slate-300" />
           </a>
         </div>
       </div>
@@ -112,10 +133,14 @@ export default function ResumeUploadCard({
       {/* Upload New File */}
       <form
         onSubmit={handleUpload}
-        className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-md space-y-5"
+        className="p-6 rounded-2xl shadow-xl backdrop-blur-md space-y-5"
+        style={{
+          background: "#0B1220",
+          border: "1px solid #2A3140",
+        }}
       >
         <div>
-          <h2 className="text-base font-semibold text-white">Upload New Version</h2>
+          <h2 className="text-base font-semibold text-white font-[family-name:var(--font-display)]">Upload New Version</h2>
           <p className="text-xs text-slate-400 mt-0.5">
             Maximum file size: 5 MB. PDF files only. Upon uploading, the &ldquo;Last updated&rdquo; date will automatically update to the current month &amp; year.
           </p>
@@ -128,7 +153,13 @@ export default function ResumeUploadCard({
           </div>
         )}
 
-        <div className="border-2 border-dashed border-slate-700 hover:border-indigo-500/50 rounded-2xl p-8 text-center bg-slate-950/40 transition-colors">
+        <div
+          className="border-2 border-dashed rounded-2xl p-8 text-center transition-colors"
+          style={{
+            background: "#050A14",
+            borderColor: "#2A3140",
+          }}
+        >
           <Upload className="w-8 h-8 text-slate-400 mx-auto mb-3" />
           <p className="text-sm font-medium text-slate-200">
             {selectedFile ? selectedFile.name : "Choose a PDF file from your device"}
@@ -137,7 +168,18 @@ export default function ResumeUploadCard({
             {selectedFile ? `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB` : "PDF up to 5 MB"}
           </p>
 
-          <label className="inline-block mt-4 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 hover:text-white cursor-pointer border border-slate-700 transition-colors">
+          <label
+            className="inline-block mt-4 px-4 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:text-white cursor-pointer transition-colors"
+            style={{
+              background: "#4A5568",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLLabelElement).style.background = "#2D3748";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLLabelElement).style.background = "#4A5568";
+            }}
+          >
             <span>Browse Files</span>
             <input
               type="file"
@@ -153,7 +195,16 @@ export default function ResumeUploadCard({
           <button
             type="submit"
             disabled={!selectedFile || isUploading}
-            className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-lg shadow-indigo-900/30 transition-all flex items-center gap-2 disabled:opacity-40"
+            className="px-5 py-2.5 rounded-xl text-white font-semibold text-sm shadow-md transition-all flex items-center gap-2 disabled:opacity-40"
+            style={{
+              background: "#4A5568",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = "#2D3748";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = "#4A5568";
+            }}
           >
             {isUploading ? (
               <>

@@ -30,6 +30,8 @@ console.log("\n🔍 check:content — Verifying live Supabase content\n");
 // 1. Env vars
 if (!url || !url.trim()) {
   fail("NEXT_PUBLIC_SUPABASE_URL is missing or empty");
+} else if (url.includes("/rest/v1")) {
+  fail("NEXT_PUBLIC_SUPABASE_URL should NOT contain '/rest/v1'. Use 'https://<project-ref>.supabase.co'");
 } else {
   pass(`NEXT_PUBLIC_SUPABASE_URL = ${url.slice(0, 30)}…`);
 }

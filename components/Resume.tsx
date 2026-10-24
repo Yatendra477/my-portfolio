@@ -96,6 +96,7 @@ export default function Resume({ settings }: ResumeProps) {
             </motion.div>
 
             {/* Action buttons: Preview and Download */}
+            {settings.resumeUrl ? (
             <div className="flex flex-wrap items-center gap-3">
               <motion.a
                 href={settings.resumeUrl}
@@ -130,6 +131,11 @@ export default function Resume({ settings }: ResumeProps) {
                 <Download size={16} /> Download Resume
               </motion.a>
             </div>
+            ) : (
+            <p className="text-sm font-medium" style={{ color: "#6B7280" }}>
+              Resume will be available soon.
+            </p>
+            )}
 
             {showLastUpdated && (
               <p className="text-xs mt-4" style={{ color: "#6B7280" }}>

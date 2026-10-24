@@ -139,6 +139,7 @@ export default function Hero({ settings, projects, certifications }: HeroProps) 
                 >
                   <MessageCircle size={14} /> Contact Me
                 </a>
+                {settings.resumeUrl && (
                 <a
                   href={settings.resumeUrl}
                   download="Yatendra_Verma_Resume.pdf"
@@ -149,6 +150,7 @@ export default function Hero({ settings, projects, certifications }: HeroProps) 
                 >
                   <Download size={13} /> Download Resume
                 </a>
+                )}
               </div>
             </motion.div>
 

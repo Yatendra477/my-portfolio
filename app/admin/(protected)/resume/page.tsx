@@ -16,8 +16,8 @@ export default async function AdminResumePage() {
       </div>
 
       <ResumeUploadCard
-        currentResumeUrl={settings.resumeUrl || "/resume.pdf"}
-        currentUpdatedAt={settings.resumeUpdatedAt || "October 2026"}
+        currentResumeUrl={settings.resumeUrl || ""}
+        currentUpdatedAt={settings.resumeUpdatedAt || ""}
       />
     </div>
   );

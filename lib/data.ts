@@ -155,7 +155,7 @@ const FALLBACK_SITE_SETTINGS: SiteSettings = {
   availabilityText: "Open to Work",
   statusText: STUDENT_STATUS,
   profileImageUrl: personalInfo.profileImage,
-  resumeUrl: personalInfo.resumeUrl,
+  resumeUrl: "",
   resumeUpdatedAt: RESUME_UPDATED,
   heroStats: [
     { icon: "Briefcase", label: "Projects",       value: `${staticProjects.length}`,       highlight: false },
@@ -191,7 +191,10 @@ const FALLBACK_SECTION_VISIBILITY: SectionVisibility = {
 // ── Fetchers ────────────────────────────────────────────────────
 
 export async function getSiteSettings(): Promise<SiteSettings> {
-  if (!supabaseConfigured()) return FALLBACK_SITE_SETTINGS;
+  if (!supabaseConfigured()) {
+    console.warn("[getSiteSettings] Supabase not configured — using static fallback. Resume URL will be '/resume.pdf'.");
+    return FALLBACK_SITE_SETTINGS;
+  }
   try {
     const supabase = await createClient();
     const { data, error } = await supabase
@@ -200,7 +203,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       .order("updated_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    if (error || !data) return FALLBACK_SITE_SETTINGS;
+    if (error || !data) {
+      console.warn("[getSiteSettings] Supabase query returned error or empty:", error?.message ?? "no data");
+      return FALLBACK_SITE_SETTINGS;
+    }
     return {
       name: data.name,
       title: data.title,
@@ -208,7 +214,9 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       availabilityText: data.availability_text,
       statusText: data.status_text,
       profileImageUrl: data.profile_image_url,
-      resumeUrl: data.resume_url,
+      resumeUrl: data.resume_url
+        ? `${data.resume_url}${data.resume_url.includes("?") ? "&" : "?"}v=${new Date(data.updated_at).getTime()}`
+        : "",
       resumeUpdatedAt: data.resume_updated_at,
       heroStats: Array.isArray(data.hero_stats) ? data.hero_stats : [],
       contactEmail: data.contact_email,
@@ -220,7 +228,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
       seoDescription: data.seo_description,
       ogImageUrl: data.og_image_url,
     };
-  } catch {
+  } catch (err) {
+    console.error("[getSiteSettings] Exception:", err);
     return FALLBACK_SITE_SETTINGS;
   }
 }

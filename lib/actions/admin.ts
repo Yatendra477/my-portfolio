@@ -225,8 +225,9 @@ export async function uploadResumeAction(formData: FormData) {
     .limit(1)
     .maybeSingle();
 
+  let dbError;
   if (existing?.id) {
-    await supabase
+    const res = await supabase
       .from("site_settings")
       .update({
         resume_url: publicUrl,
@@ -234,12 +235,19 @@ export async function uploadResumeAction(formData: FormData) {
         updated_at: new Date().toISOString(),
       })
       .eq("id", existing.id);
+    dbError = res.error;
   } else {
-    await supabase.from("site_settings").insert({
+    const res = await supabase.from("site_settings").insert({
       resume_url: publicUrl,
       resume_updated_at: updatedDateStr,
       updated_at: new Date().toISOString(),
     });
+    dbError = res.error;
+  }
+
+  if (dbError) {
+    console.error("[uploadResume] DB write failed:", dbError.message);
+    return { success: false, error: "File uploaded but failed to save URL: " + dbError.message };
   }
 
   revalidatePath("/");

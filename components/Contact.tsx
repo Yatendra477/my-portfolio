@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import Image from "next/image";
 import {
   Send,
   Mail,
@@ -162,35 +161,35 @@ export default function Contact({ settings }: ContactProps) {
           subtitle="Have a question or want to work together? Let's connect!"
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start max-w-6xl mx-auto">
-          {/* ── Left Column: Contact Info + Organic Blob Avatar Decoration ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch max-w-6xl mx-auto">
+          {/* ── Left Column: Contact Info ── */}
           <motion.div
-            className="lg:col-span-5 flex flex-col gap-6"
+            className="lg:col-span-5 flex flex-col h-full"
             variants={fadeLeftVariant}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
           >
-            <div>
+            <div className="mb-4 lg:mb-6">
               <h3
                 className="text-xl font-bold mb-1 font-[family-name:var(--font-display)]"
                 style={{ color: "#1B1F3B" }}
               >
                 Contact Information
               </h3>
-              <p className="text-sm mb-4" style={{ color: "#6B7280" }}>
+              <p className="text-sm" style={{ color: "#6B7280" }}>
                 Feel free to connect directly through any of these platforms.
               </p>
             </div>
 
-            {/* Contact list cards */}
-            <div className="space-y-3">
+            {/* Contact list cards: stretch evenly on lg so left column ends at the same line as the form card */}
+            <div className="flex-1 flex flex-col gap-3 sm:gap-3.5">
               {contactCards.map((card) => {
                 const IconComponent = card.icon;
                 return (
                   <div
                     key={card.label}
-                    className="rounded-2xl p-4 flex items-center gap-4 transition-all duration-200 group hover:shadow-sm"
+                    className="rounded-2xl p-4 flex items-center gap-4 transition-all duration-200 group hover:shadow-sm lg:flex-1"
                     style={{
                       background: "#FFFFFF",
                       border: "1px solid #E2E8F0",
@@ -249,49 +248,11 @@ export default function Contact({ settings }: ContactProps) {
                 );
               })}
             </div>
-
-            {/* Reference Organic Blob + "Hi!" Speech Bubble Decoration */}
-            <div
-              className="relative rounded-3xl p-6 overflow-hidden flex flex-col items-center justify-center min-h-[200px]"
-              style={{
-                background: "#FFFFFF",
-                border: "1px solid #E2E8F0",
-              }}
-            >
-              {/* Soft gray organic blob in the background */}
-              <div
-                className="absolute w-44 h-44 rounded-[50%_60%_70%_40%/60%_40%_60%_50%] pointer-events-none blur-xs"
-                style={{ background: "#D3D4E2", opacity: 0.8 }}
-              />
-
-              {/* Standing avatar with Hi! bubble */}
-              <div className="relative z-10 w-36 h-48 flex items-center justify-center">
-                <Image
-                  src="/images/profile-cutout.png"
-                  alt="Yatendra Verma"
-                  fill
-                  sizes="144px"
-                  className="object-contain drop-shadow-md select-none pointer-events-none"
-                />
-
-                {/* Dark "Hi!" speech bubble with tail pointing toward head */}
-                <div
-                  className="absolute -top-1 -right-2 z-20 px-3 py-1 rounded-full font-bold text-xs shadow-md select-none flex items-center justify-center"
-                  style={{ background: "#1B1F3B", color: "#FFFFFF" }}
-                >
-                  Hi!
-                  <div
-                    className="absolute -bottom-1 left-2.5 w-2 h-2 rotate-45"
-                    style={{ background: "#1B1F3B" }}
-                  />
-                </div>
-              </div>
-            </div>
           </motion.div>
 
           {/* ── Right Column: The Contact Form ── */}
           <motion.div
-            className="lg:col-span-7"
+            className="lg:col-span-7 h-full"
             variants={fadeRightVariant}
             initial="hidden"
             whileInView="visible"
@@ -300,7 +261,7 @@ export default function Contact({ settings }: ContactProps) {
             <form
               onSubmit={handleSubmit}
               noValidate
-              className="rounded-3xl p-6 sm:p-8 lg:p-10 shadow-md"
+              className="rounded-3xl p-6 sm:p-8 lg:p-10 shadow-md h-full"
               style={{
                 background: "#FFFFFF",
                 border: "1px solid #E2E8F0",

@@ -59,28 +59,61 @@ export default function About({ settings, highlights, stats, skillCategories }: 
           subtitle="A passionate engineer building the future with code and creativity"
         />
 
-        {/* ── Top Bio Block: Image on Left + Overlapping #F3F4F6 Card ── */}
+        {/* ── Top Bio Block: Non-overlapping Two-Column Grid ── */}
         <motion.div
-          className="relative flex flex-col md:flex-row items-center justify-center mb-16 lg:mb-20 max-w-5xl mx-auto"
+          className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-6 md:gap-8 lg:gap-12 items-stretch mb-16 lg:mb-20 max-w-5xl mx-auto"
           variants={fadeUpVariant}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
         >
-          {/* Left Column: Portrait Photo */}
-          <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[340px] lg:max-w-[380px] aspect-[4/5] rounded-3xl overflow-hidden shadow-xl border-4 border-white shrink-0 z-0 bg-slate-100">
-            <Image
-              src="/images/profile-v2.png"
-              alt={settings.name}
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, 380px"
+          {/* Left Card: Cutout in Lavender Gradient Card */}
+          <div
+            className="relative rounded-3xl overflow-hidden flex items-end justify-center h-[clamp(320px,55svh,440px)] lg:h-auto lg:min-h-[420px]"
+            style={{
+              background: "linear-gradient(135deg, #EDEDF5 0%, #D8DAE9 45%, #C9CBD8 100%)",
+              border: "1.5px solid rgba(255, 255, 255, 0.85)",
+              boxShadow:
+                "0 20px 60px -12px rgba(27, 31, 59, 0.14), 0 4px 20px rgba(27, 31, 59, 0.05), 0 1px 0 rgba(255, 255, 255, 0.8) inset",
+            }}
+          >
+            {/* Soft radial glow behind cutout */}
+            <div
+              aria-hidden="true"
+              className="absolute rounded-full pointer-events-none"
+              style={{
+                width: "80%",
+                aspectRatio: "1",
+                bottom: "0%",
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "radial-gradient(circle, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 70%)",
+              }}
             />
+
+            {/* Cutout image container: ~85% of card height, bottom-aligned and centred */}
+            <div className="relative w-full h-[85%] flex items-end justify-center z-10">
+              <Image
+                src="/images/profile-cutout.png"
+                alt={settings.name}
+                width={1303}
+                height={1207}
+                priority
+                className="h-full w-auto object-contain object-bottom select-none drop-shadow-xl"
+                style={{
+                  maxWidth: "100%",
+                  maskImage:
+                    "linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%)",
+                  WebkitMaskImage:
+                    "linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%)",
+                }}
+              />
+            </div>
           </div>
 
-          {/* Right Column: Overlapping #F3F4F6 Rounded Card */}
+          {/* Right Card: Vertically Centred Content */}
           <div
-            className="w-full md:max-w-xl lg:max-w-2xl rounded-3xl p-6 sm:p-8 lg:p-10 shadow-lg relative md:-ml-10 lg:-ml-14 z-10 mt-6 md:mt-0"
+            className="rounded-3xl p-8 lg:p-10 flex flex-col justify-center"
             style={{
               background: "#F3F4F6",
               border: "1px solid #D1D5DB",
@@ -102,7 +135,7 @@ export default function About({ settings, highlights, stats, skillCategories }: 
             >
               I&apos;m{" "}
               <strong style={{ color: "#1B1F3B" }}>{settings.name}</strong>,{" "}
-              a {settings.statusText}{" "}specializing in Robotics &amp; Automation at Medicaps
+              a {settings.statusText} specializing in Robotics &amp; Automation at Medicaps
               University, Indore.
             </p>
 
@@ -126,16 +159,17 @@ export default function About({ settings, highlights, stats, skillCategories }: 
               that make a real-world impact.
             </p>
 
-            {/* Dark "Learn More" button (scrolls to Experience) */}
-            <a
-              href="#experience"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 no-underline"
-              style={{
-                background: "#1B1F3B",
-              }}
-            >
-              Learn More <ArrowRight size={16} />
-            </a>
+            <div>
+              <a
+                href="#experience"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 no-underline"
+                style={{
+                  background: "#1B1F3B",
+                }}
+              >
+                Learn More <ArrowRight size={16} />
+              </a>
+            </div>
           </div>
         </motion.div>
 

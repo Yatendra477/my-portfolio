@@ -1,30 +1,38 @@
--- =============================================================
--- 002_seed.sql — All current portfolio content
+﻿-- =============================================================
+-- 002_seed.sql — All current portfolio content (IDEMPOTENT)
 -- Run AFTER 001_init.sql in the Supabase SQL editor.
+-- Safe to run any number of times — uses ON CONFLICT DO NOTHING
+-- on each table's natural key so row counts never grow.
+--
+-- Does NOT touch: admins, messages, or resume_url / resume_updated_at
+-- columns of site_settings (those are managed via the admin UI).
 -- =============================================================
 
 -- ── site_settings ─────────────────────────────────────────────
+-- site_settings has no natural key — we use an upsert-by-count
+-- pattern: insert only if the table is empty.
+-- resume_url and resume_updated_at are intentionally excluded
+-- so uploading a real resume via the admin UI is never overwritten.
 INSERT INTO site_settings (
   name, title, hero_description, availability_text, status_text,
-  profile_image_url, resume_url, resume_updated_at,
+  profile_image_url,
   hero_stats,
   contact_email, contact_phone, contact_location,
   github_url, linkedin_url,
   seo_title, seo_description, og_image_url
-) VALUES (
+)
+SELECT
   'Yatendra Verma',
   'Python Developer & AI/ML Engineer',
   'Passionate Python Developer and AI/ML Engineer specializing in Computer Vision, Machine Learning, and backend development. Building intelligent systems that bridge the gap between cutting-edge research and real-world applications.',
   'Open to Work',
   'final-year B.Tech student',
   '/images/profile-cutout.png',
-  '/resume.pdf',
-  '',
   '[
-    {"icon": "Briefcase", "label": "Projects",       "value": "5",     "highlight": false},
-    {"icon": "Award",     "label": "Certifications", "value": "5",     "highlight": false},
-    {"icon": "Code2",     "label": "LeetCode",       "value": "200+",  "highlight": false},
-    {"icon": "Wifi",      "label": "Availability",   "value": "Open to Work", "highlight": true}
+    {"icon": "Briefcase", "label": "Projects",       "value": "5",          "highlight": false},
+    {"icon": "Award",     "label": "Certifications", "value": "5",          "highlight": false},
+    {"icon": "Code2",     "label": "LeetCode",       "value": "200+",       "highlight": false},
+    {"icon": "Wifi",      "label": "Availability",   "value": "Open to Work","highlight": true}
   ]',
   'yatendrav477@gmail.com',
   '+91-9479607590',
@@ -34,10 +42,10 @@ INSERT INTO site_settings (
   'Yatendra Verma | Python Developer & AI/ML Engineer',
   'Portfolio of Yatendra Verma — Python Developer and AI/ML Engineer specializing in Computer Vision, Machine Learning, and backend development.',
   ''
-)
-ON CONFLICT DO NOTHING;
+WHERE NOT EXISTS (SELECT 1 FROM site_settings LIMIT 1);
 
 -- ── section_visibility ────────────────────────────────────────
+-- Natural key: section_key (UNIQUE in schema).
 INSERT INTO section_visibility (section_key, is_visible) VALUES
   ('home',           true),
   ('about',          true),
@@ -53,6 +61,7 @@ INSERT INTO section_visibility (section_key, is_visible) VALUES
 ON CONFLICT (section_key) DO NOTHING;
 
 -- ── about_highlights ─────────────────────────────────────────
+-- Natural key: lower(trim(title)) — guarded by uix_about_highlights_title.
 INSERT INTO about_highlights (sort_order, icon, title, description) VALUES
   (1, 'Lightbulb', 'Problem Solving',       '200+ LeetCode problems solved. Strong foundation in data structures, algorithms, and computational thinking.'),
   (2, 'Code2',     'Software Engineering',  'Building scalable, maintainable applications with clean architecture and modern development practices.'),
@@ -60,28 +69,40 @@ INSERT INTO about_highlights (sort_order, icon, title, description) VALUES
   (4, 'Eye',       'Computer Vision',       'Specialized in image processing, face recognition, object detection, and real-time visual systems.'),
   (5, 'Users',     'Leadership',            'Active participant in hackathons, tech events, and collaborative engineering projects.'),
   (6, 'TrendingUp','Continuous Learning',   'Always exploring emerging technologies, earning certifications, and expanding technical horizons.')
-ON CONFLICT DO NOTHING;
+ON CONFLICT (lower(trim(title))) DO NOTHING;
 
 -- ── about_stats ───────────────────────────────────────────────
+-- Natural key: lower(trim(label)) — guarded by uix_about_stats_label.
 INSERT INTO about_stats (sort_order, label, value, suffix) VALUES
   (1, 'Projects Completed',    5,   ''),
   (2, 'Certifications Earned', 5,   ''),
   (3, 'Technologies Learned',  21,  '+'),
   (4, 'LeetCode Problems',     200, '+'),
   (5, 'Hackathons',            2,   '+')
-ON CONFLICT DO NOTHING;
+ON CONFLICT (lower(trim(label))) DO NOTHING;
 
 -- ── education ─────────────────────────────────────────────────
+-- Natural key: (lower(trim(title)), lower(trim(period))) — guarded by uix_education_title_period.
 INSERT INTO education (sort_order, period, title, subtitle, institution, location, tags) VALUES
-  (1, '2020',        'Secondary (10th Grade)',        'CBSE',                   'Gyan Sagar International School', 'Hoshangabad, India', '{}'),
-  (2, '2022',        'Higher Secondary (12th Grade)', 'Science — CBSE',         'Gyan Sagar International School', 'Hoshangabad, India', '{}'),
-  (3, '2022 — 2026', 'Bachelor of Technology (B.Tech)', 'Robotics & Automation', 'Medicaps University',             'Indore, India',
+  (1, '2020',        'Secondary (10th Grade)',          'CBSE',                   'Gyan Sagar International School', 'Hoshangabad, India', '{}'),
+  (2, '2022',        'Higher Secondary (12th Grade)',   'Science — CBSE',         'Gyan Sagar International School', 'Hoshangabad, India', '{}'),
+  (3, '2022 — 2026', 'Bachelor of Technology (B.Tech)', 'Robotics & Automation',  'Medicaps University',             'Indore, India',
    ARRAY['Data Structures','Algorithms','OOP','DBMS','Operating Systems','Computer Networks','Computer Vision','Machine Learning','AI']
   )
-ON CONFLICT DO NOTHING;
+ON CONFLICT (lower(trim(title)), lower(trim(period))) DO NOTHING;
 
 -- ── skill_categories & skills ─────────────────────────────────
-WITH inserted_cats AS (
+-- skill_categories natural key: name (UNIQUE in schema).
+-- skills natural key: (category_id, lower(trim(name))) — guarded by uix_skills_category_name.
+--
+-- The CTE inserts categories and returns their ids.
+-- Skills then look up each category id by name, so this is
+-- safe even if some categories already exist (RETURNING only
+-- gives back newly inserted rows; existing ones are fetched
+-- via a separate lookup for the skills join).
+
+WITH cats AS (
+  -- Insert missing categories; DO NOTHING for existing ones.
   INSERT INTO skill_categories (sort_order, name) VALUES
     (1, 'Programming Languages'),
     (2, 'Frontend'),
@@ -91,45 +112,59 @@ WITH inserted_cats AS (
     (6, 'Tools & Platforms')
   ON CONFLICT (name) DO NOTHING
   RETURNING id, name
+),
+-- Merge newly inserted ids with pre-existing category ids.
+all_cats AS (
+  SELECT id, name FROM cats
+  UNION ALL
+  SELECT sc.id, sc.name
+  FROM skill_categories sc
+  WHERE sc.name NOT IN (SELECT name FROM cats)
+    AND sc.name IN (
+      'Programming Languages','Frontend','Backend',
+      'Database','AI & Computer Vision','Tools & Platforms'
+    )
 )
 INSERT INTO skills (sort_order, category_id, name, description, icon, level)
 SELECT s.sort_order, c.id, s.name, s.description, s.icon, s.level
-FROM inserted_cats c
+FROM all_cats c
 JOIN (VALUES
   -- Programming Languages
-  (1, 'Programming Languages', 'Python',    'Primary language for all projects',         'Code2',       90),
-  (2, 'Programming Languages', 'C',         'Systems & embedded programming',            'Cpu',         75),
+  (1, 'Programming Languages', 'Python',    'Primary language for all projects',          'Code2',        90),
+  (2, 'Programming Languages', 'C',         'Systems & embedded programming',             'Cpu',          75),
   -- Frontend
-  (1, 'Frontend',              'HTML',      'Semantic markup & structure',               'Globe',       85),
-  (2, 'Frontend',              'CSS',       'Styling & responsive layouts',              'Palette',     80),
-  (3, 'Frontend',              'Streamlit', 'Python-based data apps & demos',            'BarChart3',   75),
+  (1, 'Frontend',              'HTML',      'Semantic markup & structure',                'Globe',        85),
+  (2, 'Frontend',              'CSS',       'Styling & responsive layouts',               'Palette',      80),
+  (3, 'Frontend',              'Streamlit', 'Python-based data apps & demos',             'BarChart3',    75),
   -- Backend
-  (1, 'Backend',               'FastAPI',   'High-performance async REST APIs',          'Zap',         75),
-  (2, 'Backend',               'Flask',     'Lightweight web framework',                 'FlaskConical', 70),
-  (3, 'Backend',               'Django',    'Full-featured Python web framework',        'Layers',      60),
+  (1, 'Backend',               'FastAPI',   'High-performance async REST APIs',           'Zap',          75),
+  (2, 'Backend',               'Flask',     'Lightweight web framework',                  'FlaskConical', 70),
+  (3, 'Backend',               'Django',    'Full-featured Python web framework',         'Layers',       60),
   -- Database
-  (1, 'Database',              'MySQL',     'Relational database design & queries',      'Database',    80),
-  (2, 'Database',              'MongoDB',   'NoSQL document-based storage',              'Leaf',        60),
-  (3, 'Database',              'PostgreSQL','Advanced open-source RDBMS',               'Database',    65),
+  (1, 'Database',              'MySQL',     'Relational database design & queries',       'Database',     80),
+  (2, 'Database',              'MongoDB',   'NoSQL document-based storage',               'Leaf',         60),
+  (3, 'Database',              'PostgreSQL','Advanced open-source RDBMS',                'Database',     65),
   -- AI & Computer Vision
-  (1, 'AI & Computer Vision',  'OpenCV',           'Real-time image & video processing',            'Eye',       85),
-  (2, 'AI & Computer Vision',  'Image Processing', 'Filters, transforms, feature extraction',       'Scan',      80),
-  (3, 'AI & Computer Vision',  'Machine Learning', 'Supervised & unsupervised models',              'Bot',       75),
-  (4, 'AI & Computer Vision',  'Deep Learning',    'Neural networks & model training',              'Brain',     65),
-  (5, 'AI & Computer Vision',  'Scikit-Learn',     'Classical ML pipelines & evaluation',           'Binary',    70),
-  (6, 'AI & Computer Vision',  'NumPy / Pandas',   'Numerical computing & data wrangling',          'BarChart3', 80),
-  (7, 'AI & Computer Vision',  'spaCy',            'NLP & named entity recognition',               'Bot',       65),
+  (1, 'AI & Computer Vision',  'OpenCV',           'Real-time image & video processing',         'Eye',      85),
+  (2, 'AI & Computer Vision',  'Image Processing', 'Filters, transforms, feature extraction',     'Scan',     80),
+  (3, 'AI & Computer Vision',  'Machine Learning', 'Supervised & unsupervised models',            'Bot',      75),
+  (4, 'AI & Computer Vision',  'Deep Learning',    'Neural networks & model training',            'Brain',    65),
+  (5, 'AI & Computer Vision',  'Scikit-Learn',     'Classical ML pipelines & evaluation',         'Binary',   70),
+  (6, 'AI & Computer Vision',  'NumPy / Pandas',   'Numerical computing & data wrangling',        'BarChart3',80),
+  (7, 'AI & Computer Vision',  'spaCy',            'NLP & named entity recognition',              'Bot',      65),
   -- Tools & Platforms
-  (1, 'Tools & Platforms',     'Git',          'Version control & branching',                   'GitBranch',  85),
-  (2, 'Tools & Platforms',     'GitHub',       'Repository management & collaboration',          'FolderGit2', 90),
-  (3, 'Tools & Platforms',     'VS Code',      'Primary code editor',                           'Laptop',     90),
-  (4, 'Tools & Platforms',     'Arduino',      'Microcontroller & embedded systems',             'CircuitBoard',75),
-  (5, 'Tools & Platforms',     'Linux',        'CLI, scripting & server environments',           'Terminal',   65)
+  (1, 'Tools & Platforms',     'Git',          'Version control & branching',                  'GitBranch',   85),
+  (2, 'Tools & Platforms',     'GitHub',       'Repository management & collaboration',         'FolderGit2',  90),
+  (3, 'Tools & Platforms',     'VS Code',      'Primary code editor',                          'Laptop',      90),
+  (4, 'Tools & Platforms',     'Arduino',      'Microcontroller & embedded systems',            'CircuitBoard',75),
+  (5, 'Tools & Platforms',     'Linux',        'CLI, scripting & server environments',          'Terminal',    65)
 ) AS s(sort_order, cat_name, name, description, icon, level)
   ON c.name = s.cat_name
-ON CONFLICT DO NOTHING;
+ON CONFLICT (category_id, lower(trim(name))) DO NOTHING;
 
 -- ── experience ────────────────────────────────────────────────
+-- Natural key: (lower(trim(role)), lower(trim(company)), lower(trim(period)))
+-- Guarded by uix_experience_role_company_period.
 INSERT INTO experience (sort_order, role, company, period, location, type, description, bullets, tech) VALUES
   (1,
    'Python Development Intern',
@@ -146,9 +181,10 @@ INSERT INTO experience (sort_order, role, company, period, location, type, descr
    ],
    ARRAY['Python','Django','Flask','MySQL','GitHub','NumPy','Pandas','Matplotlib']
   )
-ON CONFLICT DO NOTHING;
+ON CONFLICT (lower(trim(role)), lower(trim(company)), lower(trim(period))) DO NOTHING;
 
 -- ── projects ──────────────────────────────────────────────────
+-- Natural key: lower(trim(title)) — guarded by uix_projects_title.
 INSERT INTO projects (sort_order, title, description, category, date_text, bullets, tech, image_url, github_url, demo_url, is_featured, is_visible) VALUES
   (1,
    'Face Recognition Attendance System',
@@ -210,9 +246,11 @@ INSERT INTO projects (sort_order, title, description, category, date_text, bulle
    'https://non-profit-triage-agent.onrender.com/ui/',
    true, true
   )
-ON CONFLICT DO NOTHING;
+ON CONFLICT (lower(trim(title))) DO NOTHING;
 
 -- ── certifications ────────────────────────────────────────────
+-- Natural key: (lower(trim(title)), lower(trim(issuer)))
+-- Guarded by uix_certifications_title_issuer.
 INSERT INTO certifications (sort_order, title, issuer, period, description, credential_id, credential_url) VALUES
   (1,
    'Agentic AI',
@@ -254,9 +292,10 @@ INSERT INTO certifications (sort_order, title, issuer, period, description, cred
    '',
    ''
   )
-ON CONFLICT DO NOTHING;
+ON CONFLICT (lower(trim(title)), lower(trim(issuer))) DO NOTHING;
 
 -- ── achievements ──────────────────────────────────────────────
+-- Natural key: lower(trim(title)) — guarded by uix_achievements_title.
 INSERT INTO achievements (sort_order, category, title, description, icon) VALUES
   (1, 'Competitive Programming', '200+ LeetCode Problems Solved',
    'Consistent problem-solving practice across data structures, algorithms, and competitive programming.',
@@ -270,7 +309,7 @@ INSERT INTO achievements (sort_order, category, title, description, icon) VALUES
   (4, 'Open Source',             'Open Source Contributor',
    'Active GitHub presence with multiple public repositories and contributions to collaborative projects.',
    'GitBranch')
-ON CONFLICT DO NOTHING;
+ON CONFLICT (lower(trim(title))) DO NOTHING;
 
 -- ── testimonials ──────────────────────────────────────────────
 -- No real testimonials yet. Section is hidden via section_visibility.

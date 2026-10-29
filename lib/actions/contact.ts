@@ -4,6 +4,7 @@ import { z } from "zod";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { sendContactEmail } from "@/lib/email/send-contact-email";
 
 // ── In-memory rate limiting (max 5 submissions per 10 minutes per IP) ──
 const submissionsLog = new Map<string, number[]>();
@@ -82,8 +83,8 @@ export async function submitContactMessage(rawData: unknown): Promise<{
   try {
     const headerList = await headers();
     clientIp =
+      headerList.get("x-real-ip")?.trim() ||
       headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      headerList.get("x-real-ip") ||
       "unknown";
   } catch {
     // If headers cannot be read in some execution context, fallback safely
@@ -116,6 +117,25 @@ export async function submitContactMessage(rawData: unknown): Promise<{
     }
 
     revalidatePath("/admin/messages");
+
+    // Send email notification after database insert succeeds
+    try {
+      await sendContactEmail({
+        name,
+        email,
+        phone: phone || "",
+        subject,
+        message,
+        time: new Date().toUTCString(),
+      });
+    } catch (emailErr: unknown) {
+      // If the email fails, the visitor must STILL see the success message
+      console.error(
+        "Contact email notification failed:",
+        emailErr instanceof Error ? emailErr.message : "Unknown error"
+      );
+    }
+
     return {
       success: true,
       message: "Thank you for getting in touch! Your message has been sent successfully.",

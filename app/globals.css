@@ -85,7 +85,12 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: var(--nav-h);
+}
+
+section[id]:not(#home),
+#contact {
+  scroll-margin-top: var(--nav-h);
 }
 
 body {
@@ -116,6 +121,7 @@ body {
    ============================================================ */
 
 :root {
+  --nav-h:         4rem;
   --bg-primary:    #EDEDF5;
   --bg-secondary:  #F3F4F6;
   --bg-tertiary:   #e8e9f2;
@@ -228,6 +234,45 @@ body {
 
 .hero-gradient-bg {
   background: linear-gradient(135deg, var(--hero-bg-from) 0%, var(--hero-bg-mid) 50%, var(--hero-bg-to) 100%);
+}
+
+/* Hero card height rules with 100vh fallback and short-screen override */
+.hero-card {
+  min-height: calc(100vh - var(--nav-h) - 1.5rem);
+  min-height: calc(100svh - var(--nav-h) - 1.5rem);
+}
+
+@media (max-height: 500px) {
+  .hero-card {
+    min-height: auto !important;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+  #home {
+    min-height: auto !important;
+  }
+}
+
+/* ── Hero floating tech chips ── */
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.78);
+  box-shadow: 0 4px 16px rgba(27, 31, 59, 0.08);
+  cursor: default;
+  user-select: none;
+}
+
+/* Stop float animation for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-chip {
+    animation: none !important;
+  }
 }
 
 /* ============================================================

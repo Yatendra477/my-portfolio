@@ -181,10 +181,10 @@ export async function uploadResumeAction(formData: FormData) {
     return { success: false, error: "File exceeds maximum size of 5 MB." };
   }
 
-  // PDF validation (MIME and extension)
+  // PDF validation (both MIME and extension must match)
   const isPdfMime = file.type === "application/pdf" || file.type === "application/x-pdf";
   const isPdfExt = file.name.toLowerCase().endsWith(".pdf");
-  if (!isPdfMime && !isPdfExt) {
+  if (!isPdfMime || !isPdfExt) {
     return { success: false, error: "Only PDF files are allowed." };
   }
 
@@ -277,15 +277,21 @@ export async function uploadMediaAction(formData: FormData) {
     return { success: false, error: "Image exceeds maximum size of 2 MB." };
   }
 
-  // Type validation: jpg, png, webp
-  const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
-  const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
-  if (!allowedTypes.includes(file.type) && !["jpg", "jpeg", "png", "webp"].includes(ext)) {
+  // Type validation: strictly validate MIME and matching extension
+  const mimeToExt: Record<string, string> = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+  };
+  const rawExt = file.name.split(".").pop()?.toLowerCase() || "";
+  const normalizedExt = rawExt === "jpeg" ? "jpg" : rawExt;
+  const expectedExt = mimeToExt[file.type];
+
+  if (!expectedExt || expectedExt !== normalizedExt) {
     return { success: false, error: "Only JPG, PNG, and WebP images are allowed." };
   }
 
-  const cleanExt = ext === "jpeg" ? "jpg" : ext;
-  const storagePath = `${folder}/${crypto.randomUUID()}.${cleanExt}`;
+  const storagePath = `${folder}/${crypto.randomUUID()}.${expectedExt}`;
 
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
@@ -294,7 +300,7 @@ export async function uploadMediaAction(formData: FormData) {
   const { error: uploadError } = await supabase.storage
     .from("media")
     .upload(storagePath, buffer, {
-      contentType: file.type || `image/${cleanExt}`,
+      contentType: file.type,
       upsert: true,
     });
 
@@ -364,6 +370,48 @@ export async function deleteRecordAction(table: string, id: string) {
   return { success: true };
 }
 
+// ── Unique-constraint error translator ────────────────────────
+// Postgres error code 23505 = unique_violation.
+// Map index names to human-readable "already exists" messages.
+
+const UNIQUE_CONSTRAINT_MESSAGES: Record<string, string> = {
+  uix_projects_title:
+    "A project with this title already exists. Please use a different title.",
+  uix_certifications_title_issuer:
+    "A certification with this title and issuer already exists.",
+  uix_achievements_title:
+    "An achievement with this title already exists. Please use a different title.",
+  uix_education_title_period:
+    "An education entry with this degree and period already exists.",
+  uix_experience_role_company_period:
+    "An experience entry with this role, company, and period already exists.",
+  uix_about_highlights_title:
+    "A highlight with this title already exists. Please use a different title.",
+  uix_about_stats_label:
+    "A stat with this label already exists. Please use a different label.",
+  uix_skills_category_name:
+    "A skill with this name already exists in this category.",
+  // skill_categories uses a schema-level UNIQUE constraint named differently:
+  skill_categories_name_key:
+    "A skill category with this name already exists.",
+  // section_visibility schema-level unique:
+  section_visibility_section_key_key:
+    "This section key already exists in the visibility table.",
+};
+
+function friendlyError(err: { code?: string; message: string }): string {
+  if (err.code !== "23505") return err.message;
+
+  // The Postgres message contains "Key (...) conflicts with ... \"<index_name>\""
+  // or the detail field names the constraint. Extract the constraint/index name.
+  const match = err.message.match(/"([^"]+)"/);
+  const key = match?.[1] ?? "";
+  return (
+    UNIQUE_CONSTRAINT_MESSAGES[key] ??
+    "This entry already exists. Please change the highlighted fields and try again."
+  );
+}
+
 // ── Generic Upsert Helper ──────────────────────────────────────
 
 export async function saveRecordAction(
@@ -396,7 +444,7 @@ export async function saveRecordAction(
   }
 
   if (error) {
-    return { success: false, error: error.message };
+    return { success: false, error: friendlyError(error) };
   }
 
   revalidatePath("/");

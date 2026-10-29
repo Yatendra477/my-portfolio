@@ -6,7 +6,6 @@ import Education from "@/components/Education";
 import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import Projects from "@/components/Projects";
-import CallToAction from "@/components/CallToAction";
 import Certifications from "@/components/Certifications";
 import Achievements from "@/components/Achievements";
 import Resume from "@/components/Resume";
@@ -69,7 +68,7 @@ export default async function Home() {
       <Navigation navLinks={navLinks} settings={settings} />
       <main>
         {visibility.home !== false && (
-          <section id="home">
+          <section id="home" className="pt-[var(--nav-h)] pb-3 bg-[#F4F4F9]">
             <Hero settings={settings} projects={projects} certifications={certifications} />
           </section>
         )}
@@ -103,7 +102,6 @@ export default async function Home() {
             <Projects projects={projects} />
           </section>
         )}
-        <CallToAction />
         {visibility.certifications !== false && (
           <section id="certifications">
             <Certifications certifications={certifications} />

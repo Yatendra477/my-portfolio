@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "check:supabase": "node --env-file=.env.local scripts/check-supabase.mjs",
-    "check:content": "node --env-file=.env.local scripts/check-content.mjs"
+    "check:content": "node --env-file=.env.local scripts/check-content.mjs",
+    "check:email": "node --env-file=.env.local scripts/check-email.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -20,6 +21,7 @@
     "next-themes": "^0.4.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
+    "resend": "^6.35.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {

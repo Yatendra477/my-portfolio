@@ -73,7 +73,7 @@ export default function Navigation({ navLinks, settings }: NavigationProps) {
     <>
       {/* ── Desktop / Scroll Nav ── */}
       <motion.header
-        className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center bg-white/40 backdrop-blur-md border-b border-white/50 transition-all duration-300"
+        className="fixed top-0 left-0 right-0 z-50 h-[var(--nav-h)] flex items-center bg-white/40 backdrop-blur-md border-b border-white/50 transition-all duration-300"
         style={{
           boxShadow: isScrolled ? "0 4px 20px rgba(27,31,59,0.06)" : "none",
         }}
